@@ -1,6 +1,6 @@
 import { Entity, Property, Unique, OneToMany, Collection, Cascade } from "@mikro-orm/core";
 import { BaseEntity } from "./BaseEntity.js";
-import { Match } from "./Match.js";
+import {Events} from "./event.js";
 
 @Entity({ tableName: "users"})
 export class User extends BaseEntity {	
@@ -11,22 +11,20 @@ export class User extends BaseEntity {
 	@Property()
 	name!: string;
 	
-	@Property()
-	petType!: string;
 
-	// Note that these DO NOT EXIST in the database itself!
+	//code for event
+	//one user can create many events
 	@OneToMany(
-		() => Match,
-		match => match.owner,
-		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
+		() => Events,  //which table we are linking to
+		events => events.event_host  //which field on the table we are linking to
 	)
-	matches!: Collection<Match>;
+	events_created!: Collection<Events>;
 
+	//one user can be in many events
 	@OneToMany(
-		() => Match,
-		match => match.matchee,
-		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
+		() => Events,  //which table we are linking to
+		events => events.event_user  //which field on the table we are linking to
 	)
-	matched_by!: Collection<Match>;
+	events_participated_in!: Collection<Events>;
 
 }
