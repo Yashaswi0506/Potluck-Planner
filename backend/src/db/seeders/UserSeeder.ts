@@ -6,22 +6,22 @@ export class UserSeeder extends Seeder {
 	async run(em: EntityManager): Promise<void> {
 		em.create(User, {
 			name: "Spot",
-			email: "email@email.com",
+			email: "email1@email.com",
 		});
-
+		
 		em.create(User, {
 			name: "Dogbert",
-			email: "email2@email.com",
+			email: "email12@email.com",
 		});
-
+		
 		em.create(User, {
 			name: "Doglord",
-			email: "email3@email.com"
+			email: "email13@email.com"
 		});
-
+		
 		em.create(User, {
 			name: "NotaDog",
-			email: "email4@email.com"
+			email: "email14@email.com"
 		});
 	}
 }

@@ -1,5 +1,10 @@
 export type ICreateUsersBody = {
 	name: string,
-	email: string,
-	petType: string
+	email: string
+}
+
+export type ICreateEventBody = {
+	event_name: string,
+	event_location: string,
+	event_date:string
 }

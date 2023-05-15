@@ -12,19 +12,5 @@ export class User extends BaseEntity {
 	name!: string;
 	
 
-	//code for event
-	//one user can create many events
-	@OneToMany(
-		() => Events,  //which table we are linking to
-		events => events.event_host  //which field on the table we are linking to
-	)
-	events_created!: Collection<Events>;
-
-	//one user can be in many events
-	@OneToMany(
-		() => Events,  //which table we are linking to
-		events => events.event_user  //which field on the table we are linking to
-	)
-	events_participated_in!: Collection<Events>;
 
 }
