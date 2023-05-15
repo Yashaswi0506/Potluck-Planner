@@ -1,6 +1,13 @@
 import { Entity, Property, Unique, OneToMany, Collection, Cascade } from "@mikro-orm/core";
 import { BaseEntity } from "./BaseEntity.js";
-import { Match } from "./Match.js";
+import { Notification } from "./Notification.js";
+import { Enum } from "@mikro-orm/core";
+
+export enum UserRole {
+	ADMIN = 'Admin',
+	USER = 'User'
+}
+
 
 @Entity({ tableName: "users"})
 export class User extends BaseEntity {	
@@ -11,22 +18,23 @@ export class User extends BaseEntity {
 	@Property()
 	name!: string;
 	
-	@Property()
-	petType!: string;
-
-	// Note that these DO NOT EXIST in the database itself!
+	@Enum(() => UserRole)
+	role!: UserRole; // string enum
+	
 	@OneToMany(
-		() => Match,
-		match => match.owner,
+		() => Notification,
+		notification => notification.host,
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
 	)
-	matches!: Collection<Match>;
-
+	sent_by!: Collection<Notification>;
+	
 	@OneToMany(
-		() => Match,
-		match => match.matchee,
+		() => Notification,
+		notification => notification.participant,
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
 	)
-	matched_by!: Collection<Match>;
+	received_by!: Collection<Notification>;
+	
 
+	
 }

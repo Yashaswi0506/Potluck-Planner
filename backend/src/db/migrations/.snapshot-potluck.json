@@ -53,14 +53,18 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "pet_type": {
-          "name": "pet_type",
-          "type": "varchar(255)",
+        "role": {
+          "name": "role",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "string"
+          "enumItems": [
+            "Admin",
+            "User"
+          ],
+          "mappedType": "enum"
         }
       },
       "name": "users",
@@ -90,21 +94,12 @@
     },
     {
       "columns": {
-        "owner_id": {
-          "name": "owner_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "matchee_id": {
-          "name": "matchee_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
           "nullable": false,
           "mappedType": "integer"
         },
@@ -117,42 +112,78 @@
           "nullable": false,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "host_id": {
+          "name": "host_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "participant_id": {
+          "name": "participant_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "message": {
+          "name": "message",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         }
       },
-      "name": "match",
+      "name": "notification",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "match_pkey",
+          "keyName": "notification_pkey",
           "columnNames": [
-            "owner_id",
-            "matchee_id"
+            "id"
           ],
-          "composite": true,
+          "composite": false,
           "primary": true,
           "unique": true
         }
       ],
       "checks": [],
       "foreignKeys": {
-        "match_owner_id_foreign": {
-          "constraintName": "match_owner_id_foreign",
+        "notification_host_id_foreign": {
+          "constraintName": "notification_host_id_foreign",
           "columnNames": [
-            "owner_id"
+            "host_id"
           ],
-          "localTableName": "public.match",
+          "localTableName": "public.notification",
           "referencedColumnNames": [
             "id"
           ],
           "referencedTableName": "public.users",
           "updateRule": "cascade"
         },
-        "match_matchee_id_foreign": {
-          "constraintName": "match_matchee_id_foreign",
+        "notification_participant_id_foreign": {
+          "constraintName": "notification_participant_id_foreign",
           "columnNames": [
-            "matchee_id"
+            "participant_id"
           ],
-          "localTableName": "public.match",
+          "localTableName": "public.notification",
           "referencedColumnNames": [
             "id"
           ],
