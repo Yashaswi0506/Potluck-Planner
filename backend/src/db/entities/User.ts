@@ -1,7 +1,8 @@
 import { Entity, Property, Unique, OneToMany, Collection, Cascade } from "@mikro-orm/core";
 import { BaseEntity } from "./BaseEntity.js";
-import { Notification } from "./Notification.js";
 import { Enum } from "@mikro-orm/core";
+import { Participants} from "./Participant.js";
+import {Notification} from "./Notification.js";
 
 export enum UserRole {
 	ADMIN = 'Admin',
@@ -19,21 +20,34 @@ export class User extends BaseEntity {
 	name!: string;
 	
 	@Enum(() => UserRole)
-	role!: UserRole; // string enum
+	role!: UserRole;
+	
+	@OneToMany(
+		() => Participants,
+		participants => participants.user,
+		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
+	)
+guest!: Collection<Participants>;
+	
 	
 	@OneToMany(
 		() => Notification,
 		notification => notification.host,
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
 	)
-	sent_by!: Collection<Notification>;
-	
+sent_by!: Collection<Notification>;
+
 	@OneToMany(
 		() => Notification,
 		notification => notification.participant,
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
 	)
-	received_by!: Collection<Notification>;
+received_by!: Collection<Notification>;
+
+
+
+	
+
 	
 
 	

@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { Notification } from "../db/entities/Notification.js";
 import {User, UserRole} from "../db/entities/User.js";
 import {ICreateNotificationBody , IViewNotificationBody } from "../types.js";
-
+import {Events} from "../db/entities/event.js";
 
 export function NotificationRoutesInit(app: FastifyInstance) {
 // CREATE MATCH ROUTE
@@ -13,19 +13,22 @@ export function NotificationRoutesInit(app: FastifyInstance) {
 	 you just need a reference to an entity in order to establish a relationship with another entity.
 	 */
 	app.post<{ Body: ICreateNotificationBody  }>("/notifications", async (req, reply) => {
-		const { host_id, participant_id, message } = req.body;
+		const { host_id, event_id,participant_id, message } = req.body;
 		
 		try {
 			// This is a pure convenience so we don't have to keep passing User to req.em.find
 			const userRepository = req.em.getRepository(User);
+			const eventRepository = req.em.getRepository(Events);
 			
 			//Find our two user IDs, so we can link them into our new message
 			const hostEntity = await userRepository.getReference(host_id);
 			const guestEntity = await userRepository.getReference(participant_id);
+			const eventEntity = await eventRepository.getReference(event_id);
 			
 			// Create the new message
 			const newMessage = await req.em.create(Notification, {
 				host: hostEntity,
+				eventId : eventEntity,
 				participant: guestEntity,
 				message,
 			});

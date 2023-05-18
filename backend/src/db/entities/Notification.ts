@@ -4,9 +4,13 @@ import { Entity, Property, ManyToOne, Cascade } from "@mikro-orm/core";
 import type {Ref, Rel} from "@mikro-orm/core";
 import { BaseEntity } from "./BaseEntity.js";
 import { User } from "./User.js";
+import {Events} from "./event.js";
 
 @Entity()
 export class Notification extends BaseEntity {
+	
+	@ManyToOne()
+	eventId!: Ref<Events>;
 	
 	// The person who performed the match/swiped right
 	@ManyToOne()
@@ -15,6 +19,8 @@ export class Notification extends BaseEntity {
 	// The account whose profile was swiped-right-on
 	@ManyToOne('User')
 	participant!: Rel<User>;
+	
+	
 	
 	@Property()
 	message!: string;
