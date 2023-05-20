@@ -9,11 +9,11 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=doggr
-      - POSTGRES_PASSWORD=doggr
-      - POSTGRES_DB=doggr
+      - POSTGRES_USER=potluck
+      - POSTGRES_PASSWORD=potluck
+      - POSTGRES_DB=potluck
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U doggr"]
+      test: ["CMD-SHELL", "pg_isready -U potluck"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,9 +27,9 @@ services:
     environment:
       - DB_HOST=postgres
       - DB_PORT=5432
-      - DB_NAME=doggr
-      - DB_USER=doggr
-      - DB_PASS=doggr
+      - DB_NAME=potluck
+      - DB_USER=potluck
+      - DB_PASS=potluck
       - PORT=8080
       - HOST=0.0.0.0
     depends_on:

@@ -112,51 +112,50 @@ async function DoggrRoutes(app: FastifyInstance, _options = {}) {
 	});
 	
 	
-	////Search all the events I hosted
-	////READ
-	//app.search("/events", async (req, reply) => {
-	//	const { email } = req.body;
-	//	try {
-	//		//find user with given email id
-	//		const host_user = await req.em.findOne(User, {email});
-	//
-	//		if (!host_user) {
-	//			// If user with the given email doesn't exist, return an appropriate response
-	//			reply.status(404).send("User not found");
-	//			return;
-	//		}
-	//
-	//		//get user_id of that user
-	//		const host_id = host_user.id;
-	//
-	//		//find the participant with that user_id
-	//		const host_participant = await req.em.findOne(Participants, {host_id});
-	//
-	//		if(host_participant.is_host === false)
-	//		{
-	//			reply.status(404).send("You are not a host");
-	//			return;
-	//		}
-	//
-	//		if (!host_participant) {
-	//			// If the participant for the host user doesn't exist, return an appropriate response
-	//			reply.status(404).send("Participant not found");
-	//			return;
-	//		}
-	//
-	//		//find all event_id of that participant
-	//		const host_event_id = await  req.em.find(Participants, {host_participant});
-	//
-	//		//find events corresponding to all the event id
-	//		const theEvent = await req.em.find(Events, {host_event_id});
-	//		console.log(theEvent);
-	//		reply.send(theEvent);
-	//	} catch (err) {
-	//		console.error(err);
-	//		reply.status(500).send(err);
-	//	}
-	//});
+	//Search all the events I hosted
+	//READ
+	app.search("/events", async (req, reply) => {
+		const { email } = req.body;
+		try {
+			//find user with given email id
+			const host_user = await req.em.findOne(User, {email});
 	
+			if (!host_user) {
+				// If user with the given email doesn't exist, return an appropriate response
+				reply.status(404).send("User not found");
+				return;
+			}
+	
+			//get user_id of that user
+			const host_id = host_user.id;
+	
+			//find the participant with that user_id
+			const host_participant = await req.em.findOne(Participants, {host_id});
+	
+			if(host_participant.is_host === false)
+			{
+				reply.status(404).send("You are not a host");
+				return;
+			}
+	
+			if (!host_participant) {
+				// If the participant for the host user doesn't exist, return an appropriate response
+				reply.status(404).send("Participant not found");
+				return;
+			}
+	
+			//find all event_id of that participant
+			const host_event_id = await  req.em.find(Participants, {host_participant});
+	
+			//find events corresponding to all the event id
+			const theEvent = await req.em.find(Events, {host_event_id});
+			console.log(theEvent);
+			reply.send(theEvent);
+		} catch (err) {
+			console.error(err);
+			reply.status(500).send(err);
+		}
+	})
 	
 	//update an event
 	// UPDATE
@@ -186,6 +185,12 @@ async function DoggrRoutes(app: FastifyInstance, _options = {}) {
 	//Delete an event
 	//only host can delete the event
 	//Delete all events
+	
+	//add parti
+	//delete
+	//read
+	
+	
 
 
 }
