@@ -155,7 +155,7 @@ async function DoggrRoutes(app: FastifyInstance, _options = {}) {
 			console.error(err);
 			reply.status(500).send(err);
 		}
-	})
+	});
 	
 	//update an event
 	// UPDATE
