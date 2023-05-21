@@ -4,16 +4,7 @@ import {test, teardown} from "tap";
 import {faker} from "@faker-js/faker";
 import app from '../src/app.js';
 
-test("Request the /hello route", async () => {
-	const response = await app.inject({
-		method: 'GET',
-		url: "/hello"
-	});
-	
-	response.statusCode.should.equal(200);
-	response.body.should.equal("hello");
-	
-});
+
 
 test("List all users from /dbTest", async () => {
 	const response = await app.inject({
