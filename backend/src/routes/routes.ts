@@ -3,8 +3,8 @@ dotenv.config();
 
 import { FastifyInstance } from "fastify";
 import { UserRoutesInit } from "./user_routes.js";
-import {NotificationRoutesInit} from "./notification_routes.js";
-import {ParticipantRoutesInit} from "./participant_routes.js";
+import { NotificationRoutesInit } from "./notification_routes.js";
+import { ParticipantRoutesInit } from "./participant_routes.js";
 
 /** This function creates all backend routes for the site
  *
@@ -16,11 +16,10 @@ async function PotluckRoutes(app: FastifyInstance, _options = {}) {
 	if (!app) {
 		throw new Error("Fastify instance has no value during routes construction");
 	}
-	
+
 	UserRoutesInit(app);
 	NotificationRoutesInit(app);
 	ParticipantRoutesInit(app);
-	
 }
 
 export default PotluckRoutes;

@@ -1,0 +1,6 @@
+**/temp
+**/build
+**/.idea
+**/.code
+*.html
+*.json

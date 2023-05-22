@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "0.0.1",
-  "description": "Doggr's main backend",
+  "description": "Potluck's main backend",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,7 @@
     "migration:fresh": "pnpm mikro-orm-esm migration:fresh",
     "migration:freshSeed": "pnpm mikro-orm-esm migration:fresh --seed",
     "seed:create": "pnpm mikro-orm-esm seeder:create ",
+    "db:reset": "pnpm schema:drop && pnpm schema:update && pnpm seed:run",
     "seed:run": "pnpm mikro-orm-esm seeder:run",
     "startProd": "pnpm migration:fresh && pnpm start"
   },
