@@ -1,11 +1,12 @@
 import {
 	Entity,
 	ManyToOne,
-	ManyToMany, OneToMany, Collection, Unique, Property, Cascade
+	ManyToMany, OneToMany, Collection, Unique, Property, Cascade, Ref
 } from "@mikro-orm/core";
 import {RenameLocation} from "ts-morph";
 import { BaseEntity } from "./BaseEntity.js";
 import {Events} from "./event.js";
+import {FoodItems} from "./FoodItem.js";
 import {User} from "./User.js";
 import type {Rel} from '@mikro-orm/core';
 
@@ -24,6 +25,10 @@ export class Participants  {
 	
 	@ManyToOne({ primary: true })
 	event: Rel<Events>;
+	
+	
+	@ManyToOne()
+	food!: Ref<FoodItems>;
 	
 	@Property()
 	is_host:string = "false";

@@ -35,7 +35,7 @@ export function EventRoutesInit(app: FastifyInstance) {
 	
 	//Search all the events I hosted
 	//READ
-	app.search("/events", async (req, reply) => {
+	app.search("/events/hosted", async (req, reply) => {
 		const { email } = req.body;
 		try {
 			//find user with given email id
@@ -46,37 +46,75 @@ export function EventRoutesInit(app: FastifyInstance) {
 				reply.status(404).send("User not found");
 				return;
 			}
+			console.log("User found %d", host_user.id);
 			
-			//get user_id of that user
-			const host_id = host_user.id;
 			
 			//find the participant with that user_id
-			const host_participant = await req.em.findOne(Participants, {host_id});
+			const hosted_event_list = await req.em.find(Participants, {user_id: host_user.id, is_host: 'true'});
 			
-			if(host_participant.is_host === false)
-			{
-				reply.status(404).send("You are not a host");
-				return;
-			}
 			
-			if (!host_participant) {
+			if (!hosted_event_list) {
 				// If the participant for the host user doesn't exist, return an appropriate response
 				reply.status(404).send("Participant not found");
 				return;
 			}
-			
-			//find all event_id of that participant
-			const host_event_id = await  req.em.find(Participants, {host_participant});
-			
+			const eventList = [];
+			for (const entry of hosted_event_list) {
+				const theEvent = await req.em.find(Events, {id:entry.event.id});
+				eventList.push(theEvent);
+			}
 			//find events corresponding to all the event id
-			const theEvent = await req.em.find(Events, {host_event_id});
-			console.log(theEvent);
-			reply.send(theEvent);
+			
+			console.log(eventList);
+			reply.send(eventList);
 		} catch (err) {
 			console.error(err);
 			reply.status(500).send(err);
 		}
 	});
+	
+	//Search all the events I attended
+	//READ
+	app.search("/events/attended", async (req, reply) => {
+		const { email } = req.body;
+		try {
+			//find user with given email id
+			const guest_user = await req.em.findOne(User, {email});
+			
+			if (!guest_user) {
+				// If user with the given email doesn't exist, return an appropriate response
+				reply.status(404).send("User not found");
+				return;
+			}
+			console.log("User found %d", guest_user.id);
+			
+			
+			//find the participant with that user_id
+			const guest_event_list = await req.em.find(Participants, {user_id: guest_user.id});
+			
+			
+			if (!guest_event_list) {
+				// If the participant for the host user doesn't exist, return an appropriate response
+				reply.status(404).send("Participant not found");
+				return;
+			}
+			const eventList = [];
+			for (const entry of guest_event_list) {
+				const theEvent = await req.em.find(Events, {id:entry.event.id});
+				eventList.push(theEvent);
+			}
+			//find events corresponding to all the event id
+			
+			console.log(eventList);
+			reply.send(eventList);
+		} catch (err) {
+			console.error(err);
+			reply.status(500).send(err);
+		}
+	});
+	
+	
+	
 	
 	//update an event
 	// UPDATE

@@ -1,5 +1,6 @@
 import {Entity, Property, Unique, ManyToOne, PrimaryKey, OneToMany, Cascade, Collection} from "@mikro-orm/core";
 import { BaseEntity } from "./BaseEntity.js";
+import {FoodItems} from "./FoodItem.js";
 import {User} from "./User.js";
 import {Participants} from "./Participant.js";
 import {Notification} from "./Notification.js";
@@ -30,6 +31,13 @@ export class Events extends BaseEntity {
 	)
 	eventDetails!: Collection<Notification>;
 	
+	
+	@OneToMany(
+		() => FoodItems,
+		fooditem => fooditem.eventId,
+		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
+	)
+	eventMenu!: Collection<FoodItems>;
 	
 	
 	
