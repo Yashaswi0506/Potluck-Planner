@@ -1,0 +1,6 @@
+{
+  "entryPoints": ["src/"],
+  "out": "doc",
+  "exclude": ["**/{assets,public,test}/*.ts", "**/mikro-orm.config.ts", "main.tsx"],
+  "entryPointStrategy": "expand"
+}
