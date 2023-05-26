@@ -27,8 +27,6 @@ export class Participants  {
 	event: Rel<Events>;
 	
 	
-	@ManyToOne()
-	food!: Ref<FoodItems>;
 	
 	@Property()
 	is_host:string = "false";
@@ -36,7 +34,6 @@ export class Participants  {
 	@Property()
 	RSVP_response = RSVPStatus.Pending;
 	
-	
-	
-	
+
+
 }

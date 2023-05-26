@@ -2,6 +2,7 @@ import { Entity, Property, Unique, OneToMany, Collection, Cascade } from "@mikro
 import { BaseEntity } from "./BaseEntity.js";
 import {Events} from "./event.js";
 import { Enum } from "@mikro-orm/core";
+import {FoodItems} from "./FoodItem.js";
 import { Participants} from "./Participant.js";
 import {Notification} from "./Notification.js";
 
@@ -45,6 +46,13 @@ sent_by!: Collection<Notification>;
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
 	)
 received_by!: Collection<Notification>;
+	
+	@OneToMany(
+		() => FoodItems,
+		fooditem => fooditem.claim,
+		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
+	)
+	eventMenu!: Collection<FoodItems>;
 
 
 

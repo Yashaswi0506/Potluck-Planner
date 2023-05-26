@@ -34,7 +34,7 @@ export class Events extends BaseEntity {
 	
 	@OneToMany(
 		() => FoodItems,
-		fooditem => fooditem.eventId,
+		fooditem => fooditem.event,
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
 	)
 	eventMenu!: Collection<FoodItems>;

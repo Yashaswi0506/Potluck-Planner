@@ -3,6 +3,7 @@ dotenv.config();
 
 import { FastifyInstance } from "fastify";
 import {EventRoutesInit} from "./event_routes.js";
+import {FoodItemRoutesInit} from "./food_item_routes.js";
 import { UserRoutesInit } from "./user_routes.js";
 import {NotificationRoutesInit} from "./notification_routes.js";
 import {ParticipantRoutesInit} from "./participant_routes.js";
@@ -22,6 +23,7 @@ async function PotluckRoutes(app: FastifyInstance, _options = {}) {
 	NotificationRoutesInit(app);
 	ParticipantRoutesInit(app);
 	EventRoutesInit(app);
+	FoodItemRoutesInit(app);
 	
 }
 

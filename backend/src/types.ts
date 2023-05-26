@@ -1,3 +1,5 @@
+import {IntegerType} from "@mikro-orm/core";
+
 export type ICreateUsersBody = {
 	name: string,
 	email: string,
@@ -29,8 +31,18 @@ export type IViewNotificationBody = {
 	
 }
 
+
 export type ICreateParticipantBody = {
 	id : number,
-	participant_id : number,
+	participant_id : number
 	
 }
+
+
+export type ICreateFoodItemBody = {
+	event:number,
+	item_name: string,
+	item_type: string,
+	item_quantity: string
+}
+
