@@ -5,7 +5,7 @@ import { User, UserRole } from "../entities/User.js";
 export class UserSeeder extends Seeder {
 	async run(em: EntityManager): Promise<void> {
 		em.create(User, {
-			name: "Spot",
+			name: "Shruti",
 			email: "email@email.com",
 			role: UserRole.ADMIN,
 		});

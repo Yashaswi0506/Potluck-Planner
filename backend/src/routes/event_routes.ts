@@ -72,7 +72,7 @@ export function EventRoutesInit(app: FastifyInstance) {
 			reply.status(500).send(err);
 		}
 	});
-	
+
 	//Search all the events I attended
 	//READ
 	app.search("/events/attended", async (req, reply) => {
@@ -101,7 +101,13 @@ export function EventRoutesInit(app: FastifyInstance) {
 			const eventList = [];
 			for (const entry of guest_event_list) {
 				const theEvent = await req.em.find(Events, {id:entry.event.id});
-				eventList.push(theEvent);
+				eventList.push({
+					id: theEvent[0].id,
+					event_name: theEvent[0].event_name,
+					event_location: theEvent[0].event_location,
+					event_date: theEvent[0].event_date,
+					is_host: entry.is_host
+				});
 			}
 			//find events corresponding to all the event id
 			
