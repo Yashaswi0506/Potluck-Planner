@@ -38,27 +38,42 @@ export const AfterLogin = () => {
         navigate("/events");
     };
 
+     const onPotluckButtonclick = (id) => {
+         console.log("event id in after login :", id);
+         navigate("/manage_potluck", {state: {eventID:id}});
+
+     };
     return (
         <div>
             <div>
-                <button className="btn btn-primary btn-circle" onClick={onCreateEventButtonClickk}>Create</button>
+                <button className="btn btn-primary btn-circle" onClick={onCreateEventButtonClickk}>Create Event</button>
             </div>
             <div>
                 <h2>My Potlucks:</h2>
                 <table border={1}>
+                    <tbody>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Event Location</th>
+                        <th>Event Date</th>
+                    </tr>
                     {events ?
                             events.map((event: { id: number, event_name: string; event_location: string, event_date: string, is_host: string}) => (
                                 <tr key={event.id}>
-                                    <th>{event.event_name}</th>
+                                    <th><button className="btn btn-primary btn-circle" onClick={onPotluckButtonclick.bind(null,event.id)}>{event.event_name}</button></th>
                                     <th>{event.event_location}</th>
                                     <th>{event.event_date}</th>
                                     <th>{event.is_host}</th>
                                 </tr>
                             ))
                      : "Not found"}
+                    </tbody>
                 </table>
             </div>
         </div>
 
     );
 };
+
+//<a href="/manage_potluck">{event.event_name}</a>
+//<button className="btn btn-primary btn-circle" onClick={onPotluckButtonclick}>{event.event_name</button>

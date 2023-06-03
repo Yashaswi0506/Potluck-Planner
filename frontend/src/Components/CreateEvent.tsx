@@ -1,55 +1,62 @@
-import { httpClient } from "@/Services/HttpClient.tsx";
+
 import { useState } from "react";
-
-export enum SubmissionStatus {
-    NotSubmitted,
-    SubmitFailed,
-    SubmitSucceeded
-}
-
-export const CreateProfile = () => {
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
+import {AuthenticatedUser} from "@/PotluckTypes.ts";
 
 
-    const [event_name, setName] = useState("");
-    const [event_location, setEmail] = useState("");
-    const [event_date, setPassword] = useState("");
-    const [submitted, setSubmitted] = useState(SubmissionStatus.NotSubmitted);
+export const CreateEvent = () => {
 
 
-
-    const onSaveEventButtonclick = (ev) => {
-        const formData = new FormData();
-
-        formData.append("name", event_name);
-        formData.append('email', event_location);
-        formData.append("password", event_date);
+    const [event_name, setEventName] = useState("");
+    const [event_location, setEventLocation] = useState("");
+    const [event_date, setEventDate] = useState("");
 
 
+console.log("user id in frontend :", AuthenticatedUser.id);
 
-               const config = {
-            headers: {
-                'content-type': 'multipart/form-data',
-            }
+
+    const onSaveEventButtonclick = () => {
+
+        const  create_event_req= async () => {
+            const result = await axios({
+                method: 'post',
+                url: "http://localhost:8080/events",
+                headers: {"Access-Control-Allow-Origin": "*"},
+                data: {
+                    user_id:AuthenticatedUser.id,event_name, event_location, event_date
+                }
+
+            });
+
+            return result.status;
         };
 
-        httpClient.post("/users", formData, config)
-            .then( (response) => {
-                console.log("Got response from uploading file", response.status);
-                if (response.status === 200) {
-                    setSubmitted(SubmissionStatus.SubmitSucceeded);
-                } else {
-                    setSubmitted(SubmissionStatus.SubmitFailed);
-                }
-            });
+        create_event_req().then(value =>{
+            if (value === 200){
+                console.log("created an event");
+            }
+            else{
+               console.log("event not created");
+            }
+        });
     };
+
+    const navigate = useNavigate();
+
+     const onCancelEventButtonclick = () => {
+
+         setEventName("");
+         setEventLocation("");
+         setEventDate("");
+          console.log("EVENT NOT CREATED");
+          navigate("/after_login");
+
+     };
 
     return (
         <div className="flex flex-col items-center bg-slate-700 w-4/5 mx-auto p-5 rounded-box">
             <h2 className="text-4xl text-blue-600 mb-5">Create Event:</h2>
-            {
-                submitted === SubmissionStatus.SubmitFailed &&
-                <h3 className="text-red-500">CREATING EVENT FAILED!</h3>
-            }
 
             <div className="flex flex-col w-full mb-5">
                 <label htmlFor="name" className="text-blue-300 mb-2">Event Name:</label>
@@ -59,7 +66,7 @@ export const CreateProfile = () => {
                     id="name"
                     required
                     value={event_name}
-                    onChange={e => setName(e.target.value)}
+                    onChange={e => setEventName(e.target.value)}
                     name="name"
                     className="input input-bordered"
                 />
@@ -67,29 +74,29 @@ export const CreateProfile = () => {
 
 
             <div className="flex flex-col w-full mb-5">
-                <label htmlFor="email" className="text-blue-300 mb-2">Event Location:</label>
+                <label htmlFor="loc" className="text-blue-300 mb-2">Event Location:</label>
                 <input
-                    placeholder="email@email.com"
+                    placeholder="location..."
                     type="text"
-                    id="email"
+                    id="loc"
                     required
                     value={event_location}
-                    onChange={e => setEmail(e.target.value)}
-                    name="email"
+                    onChange={e => setEventLocation(e.target.value)}
+                    name="loc"
                     className="input input-bordered"
                 />
             </div>
 
             <div className="flex flex-col w-full mb-5">
-                <label htmlFor="password" className="text-blue-300 mb-2">Event Date:</label>
+                <label htmlFor="date" className="text-blue-300 mb-2">Event Date:</label>
                 <input
-                    placeholder="hunter2"
+                    placeholder="date..."
                     type="text"
-                    id="password"
+                    id="date"
                     required
                     value={event_date}
-                    onChange={e => setPassword(e.target.value)}
-                    name="password"
+                    onChange={e => setEventDate(e.target.value)}
+                    name="date"
                     className="input input-bordered"
                 />
             </div>
@@ -98,7 +105,8 @@ export const CreateProfile = () => {
             {
                 event_name != null && event_location != null && event_date != null &&
                 <div>
-                    <button className="btn btn-primary btn-circle" onClick={onSaveEventButtonclick}>Create</button>
+                    <button className="btn btn-primary btn-circle" onClick={onSaveEventButtonclick}>Save</button>
+                    <button className="btn btn-primary btn-circle" onClick={onCancelEventButtonclick}>Cancel</button>
                 </div>
             }
         </div>

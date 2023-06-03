@@ -7,6 +7,7 @@ export type ICreateUsersBody = {
 }
 
 export type ICreateEventBody = {
+	user_id:number
 	event_name: string,
 	event_location: string,
 	event_date:string

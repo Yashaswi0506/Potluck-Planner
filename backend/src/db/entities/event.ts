@@ -7,6 +7,8 @@ import {Notification} from "./Notification.js";
 
 @Entity({ tableName: "events"})
 export class Events extends BaseEntity {
+
+
 	
 	@Property()
 	event_name: string;

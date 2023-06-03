@@ -8,6 +8,9 @@ import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import {Notifications} from "@/Components/Notifications.tsx";
 import {Logout} from "@/Components/Logout.tsx";
 import {AfterLogin} from "@/Components/AfterLogin.tsx";
+import {CreateEvent} from "@/Components/CreateEvent.tsx";
+import {ManagePotluck} from "@/Components/ManagePotluck.tsx";
+
 
 export function PotluckRouter() {
     return (
@@ -33,6 +36,8 @@ export function PotluckRouter() {
                     <Route path="/" element={<Home />} />
                     <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
                     <Route path="/after_login" element={<AfterLogin />} />
+                    <Route path="/manage_potluck" element={<ManagePotluck />} />
+                    <Route path="/events" element={<CreateEvent />} />
                     <Route path="/Login" element={<Login />} />
                     <Route path="/Singup" element={<Signup />} />
                     <Route path="/Logout" element={<Logout />} />

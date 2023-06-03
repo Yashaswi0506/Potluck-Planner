@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import {Participants} from "../db/entities/Participant.js";
+import {Participants, RSVPStatus} from "../db/entities/Participant.js";
 import { User, UserRole } from "../db/entities/User.js";
 import { ICreateEventBody } from "../types.js";
 import { Events} from "../db/entities/event.js";
@@ -13,10 +13,13 @@ export function EventRoutesInit(app: FastifyInstance) {
 	// CRUD
 	// C
 	app.post<{Body: ICreateEventBody}>("/events", async (req, reply) => {
-		const { event_name, event_location, event_date} = req.body;
-		
+		const { user_id, event_name, event_location, event_date} = req.body;
+
+
+
+		let newEvent;
 		try {
-			const newEvent = await req.em.create(Events, {
+			    newEvent = await req.em.create(Events, {
 				event_name,
 				event_location,
 				event_date
@@ -30,6 +33,25 @@ export function EventRoutesInit(app: FastifyInstance) {
 			console.log("Failed to create new event", err.message);
 			return reply.status(500).send({message: err.message});
 		}
+		finally {
+
+			if(newEvent){
+				console.log("user id in finally  :", user_id);
+				const newParticipant
+					= await req.em.create(Participants, {
+						user:user_id,
+					    event:newEvent.id,
+					    is_host:"true",
+					    RSVP_response:RSVPStatus.Accept
+				})
+
+				await req.em.flush();
+				console.log("ceated participant entry  :", newParticipant);
+ 			}
+
+		}
+
+
 	});
 	
 	
@@ -91,7 +113,10 @@ export function EventRoutesInit(app: FastifyInstance) {
 			
 			//find the participant with that user_id
 			const guest_event_list = await req.em.find(Participants, {user_id: guest_user.id});
-			
+
+
+
+
 			
 			if (!guest_event_list) {
 				// If the participant for the host user doesn't exist, return an appropriate response
@@ -100,13 +125,20 @@ export function EventRoutesInit(app: FastifyInstance) {
 			}
 			const eventList = [];
 			for (const entry of guest_event_list) {
+				if(entry.is_host == "true"){
+					entry.is_host = "host";
+				}
+				else{
+					entry.is_host = "guest";
+				}
 				const theEvent = await req.em.find(Events, {id:entry.event.id});
 				eventList.push({
 					id: theEvent[0].id,
 					event_name: theEvent[0].event_name,
 					event_location: theEvent[0].event_location,
 					event_date: theEvent[0].event_date,
-					is_host: entry.is_host
+					is_host: entry.is_host,
+
 				});
 			}
 			//find events corresponding to all the event id
@@ -120,7 +152,28 @@ export function EventRoutesInit(app: FastifyInstance) {
 	});
 	
 	
-	
+	//search a particular potluck
+	app.search("/events/one", async (req, reply) => {
+		const { event_id } = req.body;
+		try {
+			//find user with given email id
+			const event = await req.em.find(Events, {id:event_id});
+
+			if (!event) {
+				// If user with the given email doesn't exist, return an appropriate response
+				reply.status(404).send("event not found");
+				return;
+			}
+
+			console.log("Event found");
+			reply.send(event);
+
+			}catch (err) {
+			console.error(err);
+			reply.status(500).send(err);
+		}
+	});
+
 	
 	//update an event
 	// UPDATE
