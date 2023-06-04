@@ -25,13 +25,15 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - DB_HOST=postgres
+      - DB_HOST=localhost
       - DB_PORT=5432
-      - DB_NAME=potluck
-      - DB_USER=potluck
-      - DB_PASS=potluck
+      - DB_NAME=doggr
+      - DB_USER=doggr
+      - DB_PASS=doggr
+      - HOST=localhost
       - PORT=8080
-      - HOST=0.0.0.0
+      - PASSWORD=password
+      - NODE_ENV=development
     depends_on:
       postgres:
         condition: service_healthy

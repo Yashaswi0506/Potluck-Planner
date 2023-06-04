@@ -10,12 +10,14 @@ export const Signup = () =>
   const [password, setPassword] = useState("");
   const [error, setError]= useState("");
   const {signUp } = useUserAuth();
+  const {logOut} = useUserAuth();
   const navigate =useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try{
       await signUp(email,password);
-      navigate("/");
+      await logOut();
+      navigate("/login");
     }catch(err) {
       setError(err.message);
     }
@@ -53,7 +55,7 @@ export const Signup = () =>
         </Form>
       </div>
       <div className="p-4 box mt-3 text-center">
-        Already have an account? <Link to="/">Log In</Link>
+        Already have an account? <Link to="/login">Log In</Link>
       </div>
     </>
   );

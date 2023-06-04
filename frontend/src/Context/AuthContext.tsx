@@ -1,3 +1,4 @@
+import { VerifyTokenService } from "@/Services/VerifyTokenService.tsx";
 import { createContext, useContext, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
@@ -13,7 +14,7 @@ interface UserAuthContextValue {
   logIn: (email: string, password: string) => Promise<any>;
   signUp: (email: string, password: string) => Promise<any>;
   logOut: () => Promise<void>;
- 
+  
 }
 
 const userAuthContext = createContext<UserAuthContextValue | null>(null);
@@ -37,8 +38,8 @@ export function UserAuthContextProvider({ children }: { children: React.ReactNod
       console.log("Auth", currentUser);
       setUser(currentUser);
       if (currentUser) {
-          console.log(currentUser.getIdToken());
-          currentUser.getIdToken()
+        //console.log(currentUser.getIdToken());
+        currentUser.getIdToken()
           .then((token) => setIdToken(token))
           .catch((error) => {
             console.log("Error getting ID token:", error);
@@ -47,12 +48,14 @@ export function UserAuthContextProvider({ children }: { children: React.ReactNod
       } else {
         setIdToken(null);
       }
+    console.log(idToken);
+    const res =  VerifyTokenService(idToken, currentUser.uid);
     });
     
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [idToken]);
   
   return (
     <userAuthContext.Provider
@@ -64,6 +67,5 @@ export function UserAuthContextProvider({ children }: { children: React.ReactNod
 }
 
 export function useUserAuth() {
- return useContext(userAuthContext);
+  return useContext(userAuthContext);
 }
-

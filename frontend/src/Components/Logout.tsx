@@ -13,7 +13,7 @@ export const Logout = ()  =>{
         await logOut();
         console.log("user should be empty");
         console.log(user);
-       // navigate("/");
+        navigate("/");
       
     }
     

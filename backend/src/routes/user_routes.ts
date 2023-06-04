@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { User, UserRole } from "../db/entities/User.js";
 import { ICreateUsersBody, IUpdateUsersBody } from "../types.js";
 import { SOFT_DELETABLE_FILTER } from "mikro-orm-soft-delete";
+import {verifyToken} from "../plugins/verifyCongig.js";
 
 export function UserRoutesInit(app: FastifyInstance) {
 	// Route that returns all users, soft deleted and not
@@ -96,4 +97,22 @@ export function UserRoutesInit(app: FastifyInstance) {
 			}
 		}
 	);
+	
+	app.post<{
+		Body: {
+			uid:string
+		}, Headers: {
+			'Authorization' : string
+		}
+	}>("/login", async (req, reply) => {
+		const { uid } = req.body;
+		const token= req.headers.authorization.replace('Bearer ', '');
+		console.log(token);
+		const autho = await verifyToken(token,uid);
+		console.log(autho);
+		console.log("done");
+		
+		
+		
+	});
 }
