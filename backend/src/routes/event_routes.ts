@@ -114,9 +114,6 @@ export function EventRoutesInit(app: FastifyInstance) {
 			//find the participant with that user_id
 			const guest_event_list = await req.em.find(Participants, {user_id: guest_user.id});
 
-
-
-
 			
 			if (!guest_event_list) {
 				// If the participant for the host user doesn't exist, return an appropriate response
@@ -125,7 +122,7 @@ export function EventRoutesInit(app: FastifyInstance) {
 			}
 			const eventList = [];
 			for (const entry of guest_event_list) {
-				if(entry.is_host == "true"){
+				if(entry.is_host === "true"){
 					entry.is_host = "host";
 				}
 				else{
@@ -201,6 +198,29 @@ export function EventRoutesInit(app: FastifyInstance) {
 	
 	
 	//Delete an event
-	//only host can delete the event
-	//Delete all events
+	app.delete<{ Body: { event_id: number; host_id: number} }>("/events", async (req, reply) => {
+		const { event_id, host_id } = req.body;
+
+		try {
+			const theEventToDelete = await req.em.findOneOrFail(Events, event_id, {strict: true});
+
+			// Make sure the requester is host
+			const partcipantToDelete = await req.em.findOne(Participants, {user:host_id});
+
+			console.log("event to be deleted :", theEventToDelete);
+			console.log("Participant identity :", partcipantToDelete);
+
+			if(partcipantToDelete.is_host !== "true"){
+				reply.status(403).send( {message:"You are not authorized to edit this item"});
+			}
+
+			await req.em.remove(partcipantToDelete).flush();
+			await req.em.remove(theEventToDelete).flush();
+			console.log("event deleted sucessfully");
+			return reply.send(theEventToDelete);
+		} catch (err) {
+			return reply.status(500).send(err);
+		}
+	});
+
 }
