@@ -19,7 +19,7 @@ export function PotluckRouter() {
               <li><Link to="/">Home</Link></li>
               <li><Link to="/logout">Logout</Link></li>
               <li><Link to="/login"> Login</Link></li>
-              <li><Link to="/signup"> Create Account</Link> </li>
+              <li><Link to="/signup"> Signup</Link> </li>
               <li><Link to="/notifications">Notifications</Link></li>
               
             </ul>
@@ -33,7 +33,7 @@ export function PotluckRouter() {
         <Route path="/" element={<Home />} />
         <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
         <Route path="/login" element={<Login />} />
-        <Route path="/singup" element={<Signup />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/logout" element={<Logout />} />
         
       </Routes>

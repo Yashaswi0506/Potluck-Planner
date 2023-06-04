@@ -3,7 +3,7 @@ import {IntegerType} from "@mikro-orm/core";
 export type ICreateUsersBody = {
 	name: string,
 	email: string,
-	
+	password: string
 }
 
 export type ICreateEventBody = {

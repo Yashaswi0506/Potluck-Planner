@@ -14,6 +14,7 @@ interface UserAuthContextValue {
   logIn: (email: string, password: string) => Promise<any>;
   signUp: (email: string, password: string) => Promise<any>;
   logOut: () => Promise<void>;
+  authorization: string
   
 }
 
@@ -22,6 +23,7 @@ const userAuthContext = createContext<UserAuthContextValue | null>(null);
 export function UserAuthContextProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>({});
   const [idToken, setIdToken] = useState<string | null>(null);
+  const [authorization, setauthorization] = useState("");
   
   function logIn(email: string, password: string) {
     return signInWithEmailAndPassword(auth, email, password);
@@ -35,31 +37,44 @@ export function UserAuthContextProvider({ children }: { children: React.ReactNod
   
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      
       console.log("Auth", currentUser);
       setUser(currentUser);
-      if (currentUser) {
-        //console.log(currentUser.getIdToken());
+      if (currentUser!=null) {
         currentUser.getIdToken()
           .then((token) => setIdToken(token))
           .catch((error) => {
             console.log("Error getting ID token:", error);
             setIdToken(null);
           });
-      } else {
-        setIdToken(null);
+        //console.log(idToken);
+        if (idToken != null) {
+          VerifyTokenService(idToken, currentUser.uid)
+            .then((response) => setauthorization(response.data))
+            .catch((error) => {
+              // Handle any errors
+              console.error(error);
+            });
+        console.log(authorization);
+        
+        if(authorization==='unauthorized'){
+          console.log(authorization);
+          logOut();
+          console.log("Not authorized logged out");
+        }
+          
+        }
       }
-    console.log(idToken);
-    const res =  VerifyTokenService(idToken, currentUser.uid);
     });
     
     return () => {
       unsubscribe();
     };
-  }, [idToken]);
+  }, [idToken, authorization]);
   
   return (
     <userAuthContext.Provider
-      value={{ user, logIn, signUp, logOut }}
+      value={{ user, logIn, signUp, logOut, authorization }}
     >
       {children}
     </userAuthContext.Provider>

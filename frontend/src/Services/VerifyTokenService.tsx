@@ -4,7 +4,7 @@ const serverIP = import.meta.env.API_HOST;
 const serverPort = import.meta.env.PORT;
 
 
-export const VerifyTokenService   =async (token: string, uid: string) => {
+export const VerifyTokenService   =async(token: string, uid: string) => {
   
   console.log(token);
   console.log(uid);
@@ -24,11 +24,18 @@ export const VerifyTokenService   =async (token: string, uid: string) => {
     data : data
   };
   
-  const res  =  await axios.request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-    });
-  console.log(res);
-  return res;
+ return  axios.request(config);
+  //  .then((response) => {
+      //console.log(JSON.stringify(response.data));
+    //});
+  //console.log(res);
+  //console.log("odfsp[f");
+ // return res;
 };
+
+
+
+
+
+
 

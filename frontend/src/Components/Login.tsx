@@ -19,6 +19,7 @@ export const Login = () => {
       navigate("/");
       console.log(email);
       console.log(user);
+      
     } catch (err) {
       setError(err.message);
       console.log("error");

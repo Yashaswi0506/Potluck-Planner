@@ -27,9 +27,9 @@ services:
     environment:
       - DB_HOST=localhost
       - DB_PORT=5432
-      - DB_NAME=doggr
-      - DB_USER=doggr
-      - DB_PASS=doggr
+      - DB_NAME=potluck
+      - DB_USER=potluck
+      - DB_PASS=potluck
       - HOST=localhost
       - PORT=8080
       - PASSWORD=password

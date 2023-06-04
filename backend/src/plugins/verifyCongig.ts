@@ -1,4 +1,6 @@
 import axios from "axios";
+import { FastifyInstance } from "fastify";
+import fp from "fastify-plugin";
 import jwt from "jsonwebtoken";
 export const getPublicKey = async (token:string) =>{
   const publicKeyReq = await axios.get("https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com");
@@ -32,6 +34,10 @@ export const verifyToken = async (token, uid) => {
     throw new Error(error);
   }
 };
+
+
+
+
 
 
 

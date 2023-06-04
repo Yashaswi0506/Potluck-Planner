@@ -26,14 +26,14 @@ export function UserRoutesInit(app: FastifyInstance) {
 	// Refactor note - We DO use email still for creation!  We can't know the ID yet
 	app.post<{ Body: ICreateUsersBody }>("/users", async (req, reply) => {
 		const { name, email } = req.body;
-
+		
 		try {
 			const newUser = await req.em.create(User, {
 				name,
 				role: UserRole.USER,
 				email,
 			});
-
+			
 			await req.em.flush();
 			return reply.send(newUser);
 		} catch (err) {
@@ -108,9 +108,25 @@ export function UserRoutesInit(app: FastifyInstance) {
 		const { uid } = req.body;
 		const token= req.headers.authorization.replace('Bearer ', '');
 		console.log(token);
-		const autho = await verifyToken(token,uid);
-		console.log(autho);
-		console.log("done");
+		try {
+			const authorization = await verifyToken(token, uid);
+			console.log(authorization);
+			console.log("done");
+
+				if (authorization.user_id != uid) {
+					return reply.status(403).send("unauthorized");
+				}
+				else{
+					return  reply.status(200).send("authorized");
+				}
+			}
+		
+		catch (e)
+			{
+				return reply.status(401).send("unauthorized")
+			}
+			
+		
 		
 		
 		
