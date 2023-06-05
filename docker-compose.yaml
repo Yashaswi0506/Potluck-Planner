@@ -18,24 +18,64 @@ services:
       timeout: 5s
       retries: 5
 
-  backend:
-    container_name: backend
-    build: ./backend/
-    restart: always
+  minio:
+    container_name: minio
+    image: docker.io/bitnami/minio:latest
     ports:
-      - "8080:8080"
+      - "9000:9000"
+      - "9001:9001"
     environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=potluck
-      - DB_USER=potluck
-      - DB_PASS=potluck
-      - PORT=8080
-      - HOST=0.0.0.0
-    depends_on:
-      postgres:
-        condition: service_healthy
+      - MINIO_DEFAULT_BUCKETS=potluck:public
+      - MINIO_ROOT_USER=minioUser
+      - MINIO_ROOT_PASSWORD=minioPass
+      - MINIO_SERVER_ACCESS_KEY=minioUser
+      - MINIO_SERVER_SECRET_KEY=minioPass
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 25
+
+
+  backend:
+      container_name: backend
+      build: ./backend/
+      restart: always
+      ports:
+        - "8080:8080"
+      environment:
+        - DB_HOST=postgres
+        - DB_PORT=5432
+        - DB_NAME=potluck
+        - DB_USER=potluck
+        - DB_PASS=potluck
+        - PORT=8080
+        - HOST=0.0.0.0
+        - PASSWORD=password
+        - NODE_ENV=development
+        - AUTH_SECRET=supersecret219340818092358
+        - MINIO_HOST=localhost
+        - MINIO_PORT=9000
+      depends_on:
+        postgres:
+          condition: service_healthy
+        minio:
+          condition: service_healthy
+
+  frontend:
+      container_name: frontend
+      build: ./frontend/
+      restart: always
+      ports:
+        - "88:80"
+      environment:
+        - API_HOST=backend
+        - PORT=8080
 
 volumes:
-  db:
-    driver: local
+   minio_data:
+      driver: local
+   db:
+      driver: local

@@ -40,7 +40,7 @@ await app.register(cors, {
   origin: (origin, cb) => {
     cb(null, true);
   },
-  methods: ['GET', 'POST', 'PUT', 'SEARCH', 'DELETE']
+  methods: ['GET', 'POST', 'PUT', 'SEARCH', 'DELETE', 'PATCH']
 });
 
 await app.register(FastifyMikroOrmPlugin, config);
