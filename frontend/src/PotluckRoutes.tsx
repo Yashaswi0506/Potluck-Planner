@@ -7,8 +7,12 @@ import { UserAuthContextProvider, useUserAuth } from "@/Context/AuthContext.tsx"
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import {Notifications} from "@/Components/Notifications.tsx";
 import {Logout} from "@/Components/Logout.tsx";
-
+import {auth} from "./firebaseSetup.ts";
 export function PotluckRouter() {
+ // console.log(auth.currentUser);
+  //const currentuser1 = auth.currentUser;
+  const auth = useUserAuth();
+  console.log(auth);
   return (
     <div className={"potluckfancy"}>
       <nav className="bg-blue-800 rounded-b shadow-lg mb-4">
@@ -17,11 +21,17 @@ export function PotluckRouter() {
             
             <ul className={"menu menu-horizontal"}>
               <li><Link to="/">Home</Link></li>
-              <li><Link to="/logout">Logout</Link></li>
-              <li><Link to="/login"> Login</Link></li>
-              <li><Link to="/signup"> Signup</Link> </li>
-              <li><Link to="/notifications">Notifications</Link></li>
+              {auth?.user!= null ? (
+                <li><Link to="/logout">Logout</Link></li>
+              ) : (
+                <>
+                  <li><Link to="/login"> Login</Link></li>
+                  <li><Link to="/signup"> Create Account</Link> </li>
+                </>
+              )}
               
+              <li><Link to="/notifications">Notifications</Link></li>
+            
             </ul>
           
           
@@ -29,16 +39,15 @@ export function PotluckRouter() {
         </div>
       </nav>
       <UserAuthContextProvider>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/logout" element={<Logout />} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/logout" element={<Logout />} />
         
-      </Routes>
+        </Routes>
       </UserAuthContextProvider>
     </div>
   );
 }
-

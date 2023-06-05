@@ -21,21 +21,9 @@ export const VerifyTokenService   =async(token: string, uid: string) => {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + token
     },
-    data : data
+    data: data
   };
   
- return  axios.request(config);
-  //  .then((response) => {
-      //console.log(JSON.stringify(response.data));
-    //});
-  //console.log(res);
-  //console.log("odfsp[f");
- // return res;
+  return  axios.request(config);
+  ;
 };
-
-
-
-
-
-
-

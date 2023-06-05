@@ -1,4 +1,6 @@
 import { useUserAuth } from "@/Context/AuthContext.tsx";
+import { VerifyTokenService } from "@/Services/VerifyTokenService.tsx";
+import { getAuth } from "firebase/auth";
 import { useState } from "react";
 import {Button, Form} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,6 +12,10 @@ export const Login = () => {
   const { logIn } = useUserAuth();
   const {user} = useUserAuth();
   const navigate = useNavigate();
+  const [authorization, setauthorization] = useState("");
+  const [idToken, setIdToken] = useState<any>({});
+  const {logOut} = useUserAuth();
+  
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,11 +24,18 @@ export const Login = () => {
       await logIn(email, password);
       navigate("/");
       console.log(email);
-      console.log(user);
+      //console.log(user);
+    
+      
+      
+      
+      
+      
+      
       
     } catch (err) {
-      setError(err.message);
-      console.log("error");
+    //  setError(err.message);
+      console.log(err);
     }
   };
   return (

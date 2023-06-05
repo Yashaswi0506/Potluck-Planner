@@ -2,6 +2,7 @@ import {useUserAuth} from "@/Context/AuthContext.tsx";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+
 export const Logout = ()  =>{
   const {logOut} = useUserAuth();
   const { user } = useUserAuth();
@@ -11,6 +12,7 @@ export const Logout = ()  =>{
     async function processLogout() {
       
         await logOut();
+        
         console.log("user should be empty");
         console.log(user);
         navigate("/");

@@ -21,4 +21,6 @@ export class Notification extends BaseEntity {
 
 	@Property()
 	message!: string;
+	
+	
 }

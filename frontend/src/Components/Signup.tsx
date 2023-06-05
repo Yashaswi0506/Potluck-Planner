@@ -1,4 +1,5 @@
 import { useUserAuth } from "@/Context/AuthContext.tsx";
+import { auth } from "@/firebaseSetup.ts";
 import { httpClient } from "@/Services/HttpClient.tsx";
 import { useState } from "react";
 import {Button, Form} from "react-bootstrap";
@@ -17,20 +18,23 @@ export const Signup = () =>
   const [password, setPassword] = useState("");
   const [error, setError]= useState("");
   const [submitted, setSubmitted] = useState(SubmissionStatus.NotSubmitted);
-  const {signUp } = useUserAuth();
+  const {signUp  } = useUserAuth();
   const {logOut} = useUserAuth();
   const navigate =useNavigate();
+  const [uid , setUID] = useState("");
+  const {user} = useUserAuth();
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     try{
       await signUp(email,password);
-      await logOut();
+      //navigate("/");
+      //console.log(user.uid);
+      const id = user.uid;
       
       
-     
       
-     await  httpClient.post("/users", {name, email})
+          httpClient.post("/users", {id,name, email})
         .then( (response) => {
           console.log("User Creation Status", response.status);
           if (response.status === 200) {
@@ -39,9 +43,12 @@ export const Signup = () =>
             setSubmitted(SubmissionStatus.SubmitFailed);
           }
         });
+      
+     
     } catch(err) {
       setError(err.message);
     }
+    
   };
   
   return(

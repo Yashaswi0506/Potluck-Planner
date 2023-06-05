@@ -33,10 +33,33 @@ export class ParticipantSeeder extends Seeder {
 			user:user_id_3.id,
 			event:event_id_3.id
 		});
+		em.create(Participants, {
+			is_host:"false",
+			user:user_id_2.id,
+			event:event_id_3.id
+		});
+		
+		em.create(Participants, {
+			is_host:"false",
+			user:user_id_4.id,
+			event:event_id_3.id
+		});
 		
 		em.create(Participants, {
 			is_host:"true",
 			user:user_id_4.id,
+			event:event_id_4.id
+		});
+		
+		em.create(Participants, {
+			is_host:"false",
+			user:user_id_2.id,
+			event:event_id_4.id
+		});
+		
+		em.create(Participants, {
+			is_host:"false",
+			user:user_id_3.id,
 			event:event_id_4.id
 		});
 		

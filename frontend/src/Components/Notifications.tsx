@@ -1,8 +1,10 @@
 
 
 export const Notifications = () => {
+  
   return(
-    <div>"Notification PAGE"</div>
+    <div>"Potluck Notification "</div>
+    
   );
 };
 
