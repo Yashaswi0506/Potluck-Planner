@@ -1,7 +1,7 @@
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {AuthenticatedUser} from "@/PotluckTypes.ts";
 
 
@@ -11,9 +11,33 @@ export const CreateEvent = () => {
     const [event_name, setEventName] = useState("");
     const [event_location, setEventLocation] = useState("");
     const [event_date, setEventDate] = useState("");
-
+    const event_info = useLocation();
+    const event_id = event_info.state.eventID;
 
 console.log("user id in frontend :", AuthenticatedUser.id);
+
+
+    useEffect(() => {
+        if(event_id != null) {
+            const getEvent = async () => {
+                const eventsRes = await axios({
+                    method: 'search',
+                    url: "http://localhost:8080/events/one",
+                    headers: {"Access-Control-Allow-Origin": "*"},
+                    data: {
+                        event_id: event_id
+                    }
+                });
+                return eventsRes.data[0];
+            };
+
+            getEvent().then(value => {
+                setEventName(value.event_name);
+                setEventLocation(value.event_location);
+                setEventDate(value.event_date);
+            });
+        }
+    }, [1]);
 
 
     const onSaveEventButtonclick = () => {
@@ -24,10 +48,11 @@ console.log("user id in frontend :", AuthenticatedUser.id);
                 url: "http://localhost:8080/events",
                 headers: {"Access-Control-Allow-Origin": "*"},
                 data: {
-                    user_id:AuthenticatedUser.id,event_name, event_location, event_date
+                    event_id:event_id, user_id:AuthenticatedUser.id,event_name, event_location, event_date
                 }
 
             });
+
 
             return result.status;
         };
@@ -40,6 +65,10 @@ console.log("user id in frontend :", AuthenticatedUser.id);
                console.log("event not created");
             }
         });
+
+
+
+        navigate("/after_login");
     };
 
     const navigate = useNavigate();
@@ -56,7 +85,7 @@ console.log("user id in frontend :", AuthenticatedUser.id);
 
     return (
         <div className="flex flex-col items-center bg-slate-700 w-4/5 mx-auto p-5 rounded-box">
-            <h2 className="text-4xl text-blue-600 mb-5">Create Event:</h2>
+            <h2 className="text-4xl text-blue-600 mb-5">{event_id? "Edit Event:" : "Create Event:"}</h2>
 
             <div className="flex flex-col w-full mb-5">
                 <label htmlFor="name" className="text-blue-300 mb-2">Event Name:</label>

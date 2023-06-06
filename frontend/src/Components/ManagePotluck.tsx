@@ -58,7 +58,7 @@ export const ManagePotluck = () => {
                 url: "http://localhost:8080/items",
                 headers: {"Access-Control-Allow-Origin": "*"},
                 data: {
-                    event:event_id, item_name, item_type, item_quantity
+                     event:event_id, item_name, item_type, item_quantity
                 }
 
             });
@@ -135,6 +135,37 @@ export const ManagePotluck = () => {
 
      };
 
+     const onEditItemButtonclick = () => {
+
+     };
+
+    const onDeleteItemButtonclick = (id) => {
+        const  delete_item_req= async () => {
+            const result = await axios({
+                method: 'delete',
+                url: "http://localhost:8080/items",
+                headers: {"Access-Control-Allow-Origin": "*"},
+                data: {
+                    item_id:id, participant_id:AuthenticatedUser.id
+                }
+
+            });
+
+            return result.status;
+        };
+
+        delete_item_req().then(value =>{
+            if (value === 200){
+                console.log("Item Deleted");
+                window.location.reload();
+            }
+            else{
+                console.log("Item not deleted.");
+            }
+        });
+
+    };
+
 
     return (
         <div>
@@ -153,6 +184,7 @@ export const ManagePotluck = () => {
                                 <th>{event.event_name}</th>
                                 <th>{event.event_location}</th>
                                 <th>{event.event_date}</th>
+
                             </tr>
                         ))
                         : "Not found"}
@@ -233,6 +265,8 @@ export const ManagePotluck = () => {
                                <th><button className="btn btn-primary btn-circle" onClick={onClaimButtonclick.bind(null,fooditem.id)}>
                                    {fooditem.claim! ? 'Unclaim' : 'Claim'}</button></th>
                                <th></th>
+                               <th><button className="btn btn-primary btn-circle" onClick={onEditItemButtonclick}>Edit</button></th>
+                               <th><button className="btn btn-primary btn-circle" onClick={onDeleteItemButtonclick.bind(null,fooditem.id)}>Delete</button></th>
                            </tr>
                        ))
                        : "Not found"}

@@ -9,7 +9,42 @@ export function FoodItemRoutesInit(app: FastifyInstance) {
 	
 	//add new item
 	app.post<{ Body: ICreateFoodItemBody }>("/items", async (req, reply) => {
-		const {event,item_name, item_type, item_quantity} = req.body;
+		const {participant_id, item_id, event,item_name, item_type, item_quantity} = req.body;
+
+		if(item_id != null){
+			try {
+				const itemToUpdate = await req.em.findOne(FoodItems, {id:item_id});
+				if (!itemToUpdate) {
+					reply.status(404).send({ message:"Item not found" });
+				}
+
+				const host = await req.em.findOne(Participants, {event:itemToUpdate.event, is_host:"true"});
+				console.log("host :", host);
+
+				const participant = await req.em.findOne(Participants, {event:itemToUpdate.event, user: participant_id});
+				console.log("participant in update :", participant);
+
+
+				if (host.user.id != participant_id && participant.user != itemToUpdate.claim) {
+					reply.status(403).send( {message:"You are not authorized to edit this item"});
+				}
+
+
+				itemToUpdate.item_name= item_name;
+				itemToUpdate.item_type= item_type;
+				itemToUpdate.item_quantity=item_quantity;
+
+				// Reminder -- this is how we persist our JS object changes to the database itself
+				await req.em.flush();
+				console.log("Menu updated");
+				reply.send(itemToUpdate);
+			}catch (err){
+				console.error(err);
+				reply.status(401).send(err);
+			}
+
+			return reply.send({message: "Food item updated"});
+		}
 		let newItem;
 		try {
 			 newItem = await req.em.create(FoodItems, {event, item_name, item_type, item_quantity});
@@ -169,6 +204,7 @@ export function FoodItemRoutesInit(app: FastifyInstance) {
 			await req.em.remove(itemToDelete).flush();
 			console.log("Item Deleted");
 			reply.send(itemToDelete);
+
 		}catch (err){
 			console.error(err);
 			reply.status(401).send(err);
@@ -199,7 +235,7 @@ export function FoodItemRoutesInit(app: FastifyInstance) {
 			// Reminder -- this is how we persist our JS object changes to the database itself
 			await req.em.remove(item_list).flush();
 			console.log("Item Deleted");
-			reply.send(item_list);
+			reply.status(200);
 		}catch (err){
 			console.error(err);
 			reply.status(401).send(err);

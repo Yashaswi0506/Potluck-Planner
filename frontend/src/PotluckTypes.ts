@@ -11,9 +11,9 @@ export type ProfileType = {
 };
 
 export const AuthenticatedUser :ProfileType = {
-    name: "Doglord",
-    email: "email3@email.com",
-    id: 3
+    name: "Dogbert",
+    email: "email2@email.com",
+    id: 2
 
 };
 
