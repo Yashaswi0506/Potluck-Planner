@@ -35,7 +35,7 @@ export type IViewNotificationBody = {
 
 export type ICreateParticipantBody = {
 	id : number,
-	participant_id : number
+	participant_id : string
 	
 }
 

@@ -41,7 +41,7 @@ export function PotluckRouter() {
       <UserAuthContextProvider>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+          <Route path="/notifications" element={<ProtectedRoute><Notifications/></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/logout" element={<Logout />} />

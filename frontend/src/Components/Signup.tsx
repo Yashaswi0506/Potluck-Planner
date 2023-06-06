@@ -23,18 +23,19 @@ export const Signup = () =>
   const navigate =useNavigate();
   const [uid , setUID] = useState("");
   const {user} = useUserAuth();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     try{
-      await signUp(email,password);
-      //navigate("/");
+      const signIn = await signUp(email,password);
+      navigate("/", {state:{name}});
       //console.log(user.uid);
       const id = user.uid;
       
       
       
-          httpClient.post("/users", {id,name, email})
+          const signInDB = httpClient.post("/users", {id,name, email})
         .then( (response) => {
           console.log("User Creation Status", response.status);
           if (response.status === 200) {

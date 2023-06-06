@@ -14,6 +14,18 @@ export const httpClient = axios.create({
 });
 
 
+export const HttpClientSearch = (url, data) => {
+  return httpClient.request({
+    method: 'search',
+    baseURL: url,
+    data: data,
+    maxBodyLength: Infinity
+  });
+  
+};
+
+
+
   
 
 

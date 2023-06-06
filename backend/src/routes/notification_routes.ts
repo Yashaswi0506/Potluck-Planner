@@ -49,6 +49,7 @@ export function NotificationRoutesInit(app: FastifyInstance) {
 		try {
 			const receiverEntity = await req.em.getReference(User, participant_id);
 			const messages = await req.em.find(Notification, { participant_id: receiverEntity });
+			
 			return reply.send(messages);
 		} catch (err) {
 			return reply.status(500).send({ message: err.message });

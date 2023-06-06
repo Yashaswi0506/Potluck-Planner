@@ -7,7 +7,7 @@ export const ProtectedRoute = ({ children }) => {
   const {authorization} = useUserAuth();
   
   console.log("Check user in Private: ", user);
-  if (!user && authorization!='authorized') {
+  if (authorization!='authorized'&& !user) {
     console.log(authorization);
     return <Navigate to="/" />;
   }
