@@ -1,4 +1,7 @@
 //import { CreateProfile } from "@/Components/CreateProfile.tsx";
+import {AfterLogin} from "@/Components/AfterLogin.tsx";
+import {CreateEvent} from "@/Components/CreateEvent.tsx";
+//import {ManagePotluck} from "@/Components/ManagePotluck.tsx";
 import { Home } from "@/Components/HomePage.tsx";
 import { ProtectedRoute } from "@/Components/ProtectedRoute.tsx";
 import {Signup} from "@/Components/Signup.tsx";
@@ -41,10 +44,12 @@ export function PotluckRouter() {
       <UserAuthContextProvider>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/notifications" element={<ProtectedRoute><Notifications/></ProtectedRoute>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/logout" element={<Logout />} />
+          <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+          <Route path="/after_login" element={<AfterLogin />} />
+          <Route path="/events" element={<CreateEvent />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Singup" element={<Signup />} />
+          <Route path="/Logout" element={<Logout />} />
         
         </Routes>
       </UserAuthContextProvider>

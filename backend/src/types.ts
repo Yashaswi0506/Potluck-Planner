@@ -8,9 +8,12 @@ export type ICreateUsersBody = {
 }
 
 export type ICreateEventBody = {
+	user_id:string
 	event_name: string,
 	event_location: string,
 	event_date:string
+	event_id:number;
+	
 }
 
 export type IUpdateUsersBody = {
@@ -41,9 +44,18 @@ export type ICreateParticipantBody = {
 
 
 export type ICreateFoodItemBody = {
+	participant_id: string,
+	item_id:number,
 	event:number,
 	item_name: string,
 	item_type: string,
 	item_quantity: string
+}
+
+export type IUpdateRSVP = {
+	id : number,
+	participant_id : string,
+	rsvp:string
+	
 }
 

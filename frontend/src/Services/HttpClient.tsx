@@ -10,6 +10,7 @@ export const httpClient = axios.create({
   baseURL: serverUrl,
   headers: {
     "Content-type": "application/json",
+    'Access-Control-Allow-Origin': '*'
   },
 });
 

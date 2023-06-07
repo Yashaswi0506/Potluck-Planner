@@ -3,6 +3,7 @@ export type Message ={
   host:string;
   participant:string;
   message: string;
+  eventId:number
 };
 
 export type UserType ={
@@ -25,3 +26,21 @@ export type Host = {
   hostname: string;
 };
 
+export type State = {
+  currentProfile: ProfileType;
+  likeHistory: Array<ProfileType>;
+  passHistory: Array<ProfileType>;
+};
+
+export type ProfileType = {
+  name: string;
+  email: string;
+  id: number;
+};
+
+export const AuthenticatedUser :ProfileType = {
+  name: "Dogbert",
+  email: "email2@email.com",
+  id: 2
+  
+};

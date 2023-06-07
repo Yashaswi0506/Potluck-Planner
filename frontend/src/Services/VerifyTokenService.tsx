@@ -19,11 +19,12 @@ export const VerifyTokenService   =async(token: string, uid: string) => {
     url: `http://${serverIP}:${serverPort}/login`,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token
+      'Authorization': 'Bearer ' + token,
+      'Access-Control-Allow-Origin': '*'
     },
     data: data
   };
   
   return  axios.request(config);
-  ;
+  
 };

@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify";
 import { Notification } from "../db/entities/Notification.js";
-import { Participants } from "../db/entities/Participant.js";
+import { Participants , RSVPStatus} from "../db/entities/Participant.js";
 import { User, UserRole } from "../db/entities/User.js";
-import { ICreateParticipantBody } from "../types.js";
+import { ICreateParticipantBody, IUpdateRSVP, IUpdateUsersBody } from "../types.js";
 import { Events } from "../db/entities/event.js";
 
 export function ParticipantRoutesInit(app: FastifyInstance) {
@@ -47,6 +47,26 @@ export function ParticipantRoutesInit(app: FastifyInstance) {
 
 			reply.send(eventDetails);
 		} catch (err) {
+			reply.status(500).send(err);
+		}
+	});
+	
+	app.put<{ Body: IUpdateRSVP }>("/participants/rsvp", async (req, reply) => {
+		const { id, participant_id, rsvp } = req.body;
+		try {
+			//const participantEntity = req.em.getRepository(Participants);
+			const participantDetails = await req.em.findOneOrFail(Participants ,{event: id, user: participant_id });
+			if(rsvp==="yes")
+				participantDetails.RSVP_response = RSVPStatus.Accept;
+			else if(rsvp==="no")
+				participantDetails.RSVP_response = RSVPStatus.Reject;
+			else
+				participantDetails.RSVP_response = RSVPStatus.Pending;
+			
+			// Reminder -- this is how we persist our JS object changes to the database itself
+			await req.em.flush();
+			reply.status(200).send("RSVP Status updated");
+		}catch (err) {
 			reply.status(500).send(err);
 		}
 	});
