@@ -14,11 +14,12 @@ import {auth} from "../firebaseSetup.ts";
   const [participant, setParticipant] = useState("");
   //const [host, setHost] = useState("");
   const auth = useUserAuth();
+    const id = auth.user.uid;
   //const [id, setId] = useState("");
     const [selectedOption, setSelectedOption] = useState('');
     const [hostname, setHost] = useState<Host[]>([]);
     const [eventId, setEventId] = useState("");
-  const id = auth.user.uid;
+ 
     
     
     

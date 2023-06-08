@@ -4,6 +4,7 @@
 //"My potlucks" heading with two buttons "Potluck I can manage" and "Potluck that I am attending"
 
 
+import { useUserAuth } from "@/Context/AuthContext.tsx";
 import {AuthenticatedUser, ProfileType} from "@/PotluckTypes.ts";
 import {Route, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
@@ -14,21 +15,28 @@ import {Col, Row} from "react-bootstrap";
 export const AfterLogin = () => {
   
   const [events, setEvents] = useState([]);
+  const auth = useUserAuth();
+  const[email, setEmail] = useState("");
+  
+  const getUsers = async (email) => {
+    const eventsRes = await axios({
+      method: 'search',
+      url: "http://localhost:8080/events/attended",
+      headers: {"Access-Control-Allow-Origin": "*"},
+      data: {
+        email: email
+      }
+    });
+    return eventsRes.data;
+  };
   
   useEffect(() => {
-    const getUsers = async () => {
-      const eventsRes = await axios({
-        method: 'search',
-        url: "http://localhost:8080/events/attended",
-        headers: {"Access-Control-Allow-Origin": "*"},
-        data: {
-          email: AuthenticatedUser.email
-        }
-      });
-      return eventsRes.data;
-    };
+    if (auth.user && auth.user.uid) {
+      setEmail(auth.user.email);
+      getUsers(auth.user.email).then(setEvents);
+      
+    }
     
-    getUsers().then(setEvents);
   }, []);
   
   
@@ -55,7 +63,7 @@ export const AfterLogin = () => {
         url: "http://localhost:8080/events",
         headers: {"Access-Control-Allow-Origin": "*"},
         data: {
-          event_id:id, host_id:AuthenticatedUser.id
+          event_id:id, host_id:email
         }
         
       });

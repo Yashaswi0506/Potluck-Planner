@@ -34,6 +34,8 @@ export function PotluckRouter() {
               )}
               
               <li><Link to="/notifications">Notifications</Link></li>
+              <li><Link to="/after_login">My Potlucks</Link></li>
+              
             
             </ul>
           
@@ -45,10 +47,10 @@ export function PotluckRouter() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
-          <Route path="/after_login" element={<AfterLogin />} />
+          <Route path="/after_login" element={<ProtectedRoute><AfterLogin /></ProtectedRoute>} />
           <Route path="/events" element={<CreateEvent />} />
           <Route path="/Login" element={<Login />} />
-          <Route path="/Singup" element={<Signup />} />
+          <Route path="/Signup" element={<Signup />} />
           <Route path="/Logout" element={<Logout />} />
         
         </Routes>

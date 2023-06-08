@@ -4,13 +4,20 @@ import { UserAuthContextProvider, useUserAuth } from "../Context/AuthContext";
 
 export const ProtectedRoute = ({ children }) => {
   const { user } = useUserAuth();
-  const {authorization} = useUserAuth();
-  
-  console.log("Check user in Private: ", user);
-  if (authorization!='authorized'&& !user) {
-    console.log(authorization);
-    return <Navigate to="/" />;
+  const auth = useUserAuth();
+  try {
+    
+   
+    
+    console.log("Check user in Private: ", user);
+    if (auth.user.authorization != 'authorized' && !user) {
+      console.log(auth.user.authorization);
+      return <Navigate to="/" />;
+    }
+    return children;
   }
-  return children;
+  catch(error){
+    console.log("User is not authenticated or authoorized");
+  }
 };
 

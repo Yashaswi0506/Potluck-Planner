@@ -1,7 +1,12 @@
-import {useEffect, useState} from "react";
+import { useUserAuth } from "@/Context/AuthContext.tsx";
+import { AddParticipantService } from "@/Services/AddParticipantsService.tsx";
+
+import React, {useEffect, useState} from "react";
 import axios from "axios";
+import { Modal } from "@/Components/Modal.tsx";
 import {useLocation, useNavigate} from "react-router-dom";
-import {AuthenticatedUser} from "@/PotluckTypes.ts";
+import {SendInvitationService} from "@/Services/SendInvitationService.tsx";
+//import { AuthenticatedUser, Message } from "@/PotluckTypes.ts";
 
 
 export const CreateEvent = () => {
@@ -12,11 +17,18 @@ export const CreateEvent = () => {
   const [event_date, setEventDate] = useState("");
   const event_info = useLocation();
   const event_id = event_info.state.eventID;
-  
-  console.log("user id in frontend :", AuthenticatedUser.id);
+  const [guestList, setguestList] = useState("");
+  const [message, setMessage]= useState("");
+  //console.log("user id in frontend :", AuthenticatedUser.id);
+  const auth = useUserAuth();
+  const userId = auth.user.uid;
+  const [event_created , setEventCreation] = useState("false");
+ 
+  const user_id = auth.user.uid;
   
   
   useEffect(() => {
+    
     if(event_id != null) {
       const getEvent = async () => {
         const eventsRes = await axios({
@@ -36,10 +48,11 @@ export const CreateEvent = () => {
         setEventDate(value.event_date);
       });
     }
-  }, [1]);
+  }, []);
   
   
   const onSaveEventButtonclick = () => {
+    
     
     const  create_event_req= async () => {
       const result = await axios({
@@ -47,7 +60,7 @@ export const CreateEvent = () => {
         url: "http://localhost:8080/events",
         headers: {"Access-Control-Allow-Origin": "*"},
         data: {
-          event_id:event_id, user_id:AuthenticatedUser.id,event_name, event_location, event_date
+          event_id:event_id, user_id:userId,event_name, event_location, event_date
         }
         
       });
@@ -59,10 +72,14 @@ export const CreateEvent = () => {
     create_event_req().then(value =>{
       if (value === 200){
         console.log("created an event");
+        setEventCreation("true");
+       
       }
       else{
         console.log("event not created");
       }
+     
+      
     });
     
     
@@ -78,13 +95,32 @@ export const CreateEvent = () => {
     setEventLocation("");
     setEventDate("");
     console.log("EVENT NOT CREATED");
-    navigate("/after_login");
+   
     
   };
   
+  function onMessageSendButton() {
+  const message =  `It's a Potluck Party! ${event_name} is organized at ${event_location} on ${event_date}. Please RSVP `;
+  console.log(message);
+  console.log(guestList);
+  const guestArray = guestList.split(',');
+  console.log("guestArray", guestArray);
+  const response = AddParticipantService.send(event_id, guestArray);
+  console.log(response);
+    const response1 = SendInvitationService.send(event_id, user_id, guestArray, message);
+    console.log(response1);
+    
+  
+  
+  
+  }
+  
   return (
+    <>
+  <div>
     <div className="flex flex-col items-center bg-slate-700 w-4/5 mx-auto p-5 rounded-box">
-      <h2 className="text-4xl text-blue-600 mb-5">{event_id? "Edit Event:" : "Create Event:"}</h2>
+      <h2 className="text-4xl text-blue-600 mb-5">{event_id? "Edit Event:"  : "Create Event:"}
+       </h2>
       
       <div className="flex flex-col w-full mb-5">
         <label htmlFor="name" className="text-blue-300 mb-2">Event Name:</label>
@@ -138,6 +174,28 @@ export const CreateEvent = () => {
         </div>
       }
     </div>
+      {event_id !=null && (
+        <div>
+          <h2>Invite Guest</h2>
+          <textarea
+            id="guestList"
+            name="guestList"
+            placeholder="Enter Guest Email"
+            required
+            value={guestList}
+            onChange={e => setguestList(e.target.value)}
+          />
+          <button type="submit" value="submit" onClick={onMessageSendButton}>Send Invite</button>
+        </div>
+      )}
+  </div>
+  <div className="flex flex-col">
+    <a className="openModalBtn">Guest List</a>
+      <Modal />
+  
+</div>
+  
+ </>
   );
   
 };
