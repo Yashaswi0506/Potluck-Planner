@@ -1,0 +1,17 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>10 Most Recent Potluck Ideas</title>
+    <link rel="stylesheet" type="text/css" href="/static/album.css">
+
+</head>
+<body>
+    <h1>10 Most Recent Potluck Ideas</h1>
+    <ul>
+        {% for video in videos %}
+        <li><a href="{{ video.split(' - ')[1] }}">{{ video.split(' - ')[0] }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
