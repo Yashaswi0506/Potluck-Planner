@@ -135,9 +135,6 @@ export const ManagePotluck = () => {
 
      };
 
-     const onEditItemButtonclick = () => {
-
-     };
 
     const onDeleteItemButtonclick = (id) => {
         const  delete_item_req= async () => {
@@ -265,7 +262,6 @@ export const ManagePotluck = () => {
                                <th><button className="btn btn-primary btn-circle" onClick={onClaimButtonclick.bind(null,fooditem.id)}>
                                    {fooditem.claim! ? 'Unclaim' : 'Claim'}</button></th>
                                <th></th>
-                               <th><button className="btn btn-primary btn-circle" onClick={onEditItemButtonclick}>Edit</button></th>
                                <th><button className="btn btn-primary btn-circle" onClick={onDeleteItemButtonclick.bind(null,fooditem.id)}>Delete</button></th>
                            </tr>
                        ))
@@ -278,7 +274,6 @@ export const ManagePotluck = () => {
     );
 };
 
-//<th><button className="btn btn-primary btn-circle" onClick={onEditPotluck}>Edit</button></th>
-//<th><button className="btn btn-primary btn-circle" onClick={onDeletePotluck}>Delete</button></th>
+
 
 

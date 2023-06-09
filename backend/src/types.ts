@@ -42,8 +42,6 @@ export type ICreateParticipantBody = {
 
 
 export type ICreateFoodItemBody = {
-	participant_id: number,
-	item_id:number,
 	event:number,
 	item_name: string,
 	item_type: string,
