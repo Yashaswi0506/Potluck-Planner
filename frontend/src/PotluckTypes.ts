@@ -38,9 +38,15 @@ export type ProfileType = {
   id: number;
 };
 
-export const AuthenticatedUser :ProfileType = {
-  name: "Dogbert",
-  email: "email2@email.com",
-  id: 2
-  
-};
+
+export type user ={
+  name: string;
+}
+
+export type RSVPList = {
+  user: {
+    name: string;
+  };
+  RSVP_response: string;
+}
+

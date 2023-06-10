@@ -22,21 +22,24 @@ export function NotificationRoutesInit(app: FastifyInstance) {
 
 			//Find our two user IDs, so we can link them into our new message
 			const hostEntity = await userRepository.getReference(host_id);
-			const guestEntity = await userRepository.getReference(participant_id);
+			
 			const eventEntity = await eventRepository.getReference(event_id);
 
 			// Create the new message
-			const newMessage = await req.em.create(Notification, {
-				host: hostEntity,
-				eventId: eventEntity,
-				participant: guestEntity,
-				message,
-			});
+			for (const participants of participant_id) {
+				const guestEntity = await req.em.findOne(User, {email:participants});
+				const newMessage = await req.em.create(Notification, {
+					host: hostEntity,
+					eventId: eventEntity,
+					participant: guestEntity,
+					message,
+				});
+			}
 			// Send our changes to the database
 			await req.em.flush();
 
 			// Let the user know everything went fine
-			return reply.send(newMessage);
+			return reply.send("Message Sent");
 		} catch (err) {
 			return reply.status(500).send({ message: err.message });
 		}

@@ -25,7 +25,7 @@ export type IUpdateUsersBody = {
 export type ICreateNotificationBody = {
 	host_id: string,
 	event_id : number,
-	participant_id: string,
+	participant_id: Array<string>,
 	message: string
 	
 }
@@ -38,7 +38,7 @@ export type IViewNotificationBody = {
 
 export type ICreateParticipantBody = {
 	id : number,
-	participant_id : string
+	participant_id : Array<string>
 	
 }
 

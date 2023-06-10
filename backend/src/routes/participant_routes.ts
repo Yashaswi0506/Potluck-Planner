@@ -11,23 +11,26 @@ export function ParticipantRoutesInit(app: FastifyInstance) {
 
 		try {
 			// This is a pure convenience so we don't have to keep passing User to req.em.find
-			const eventRepository = req.em.getRepository(Events);
+			
 			const userRepository = req.em.getRepository(User);
 
 			//Find our two user IDs, so we can link them into our new message
-			const eventEntity = await eventRepository.getReference(id);
-			const participantEntity = await userRepository.getReference(participant_id);
-
-			// Create the new message
-			const newParticipant = await req.em.create(Participants, {
-				event: eventEntity,
-				user: participantEntity,
-			});
+			
+			const eventEntity = await req.em.findOne(Events,id);
+			for (const participant of participant_id) {
+				console.log(participant);
+				//const participant_user = userRepository.find( {email:participant});
+				const participantEntity = await req.em.findOne(User, {email:participant});
+				const newParticipant = await req.em.create(Participants, {
+					event: eventEntity,
+					user: participantEntity,
+				});
+			}
 			// Send our changes to the database
 			await req.em.flush();
 
 			// Let the user know everything went fine
-			return reply.send(newParticipant);
+			return reply.send("Guest added");
 		} catch (err) {
 			return reply.status(500).send({ message: err.message });
 		}

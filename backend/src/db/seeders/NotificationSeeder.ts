@@ -26,7 +26,7 @@ export class NotificationSeeder extends Seeder {
 			eventId: event_id_3,
 			host: user_id_3,
 			participant : user_id_2,
-			message: "You are invited for potluck 2"
+			message: "You are invited for potluck 3"
 			
 		});
 		
@@ -34,21 +34,21 @@ export class NotificationSeeder extends Seeder {
 			eventId: event_id_3,
 			host: user_id_3,
 			participant : user_id_4,
-			message: "You are invited for potluck 2"
+			message: "You are invited for potluck 3"
 		});
 		
 		em.create(Notification, {
 			eventId: event_id_4,
 			host: user_id_4,
 			participant : user_id_2,
-			message: "You are invited for potluck 3"
+			message: "You are invited for potluck 4"
 		});
 		
 		em.create(Notification, {
 			eventId: event_id_4,
 			host: user_id_4,
 			participant : user_id_3,
-			message: "You are invited for potluck 3"
+			message: "You are invited for potluck 4"
 		});
 		
 		

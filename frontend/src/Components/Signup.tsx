@@ -28,14 +28,14 @@ export const Signup = () =>
     e.preventDefault();
     
     try{
-      const signIn = await signUp(email,password);
-      navigate("/", {state:{name}});
+      await signUp(email,password);
+      //navigate("/");
       //console.log(user.uid);
       const id = user.uid;
       
       
       
-          const signInDB = httpClient.post("/users", {id,name, email})
+      await httpClient.post("/users", {id,name, email})
         .then( (response) => {
           console.log("User Creation Status", response.status);
           if (response.status === 200) {
@@ -45,12 +45,12 @@ export const Signup = () =>
           }
         });
       
-     
+      
     } catch(err) {
       setError(err.message);
     }
     
-  };
+  };;
   
   return(
     <>

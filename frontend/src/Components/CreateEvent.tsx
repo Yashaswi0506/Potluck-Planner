@@ -23,7 +23,7 @@ export const CreateEvent = () => {
   const auth = useUserAuth();
   const userId = auth.user.uid;
   const [event_created , setEventCreation] = useState("false");
- 
+  const[openModal, setModal] = useState(false);
   const user_id = auth.user.uid;
   
   
@@ -103,7 +103,8 @@ export const CreateEvent = () => {
   const message =  `It's a Potluck Party! ${event_name} is organized at ${event_location} on ${event_date}. Please RSVP `;
   console.log(message);
   console.log(guestList);
-  const guestArray = guestList.split(',');
+  const guestArray_edit = guestList.split(',');
+  const guestArray = guestArray_edit.map(str => str.replace(/\s/g, ""));
   console.log("guestArray", guestArray);
   const response = AddParticipantService.send(event_id, guestArray);
   console.log(response);
@@ -188,11 +189,13 @@ export const CreateEvent = () => {
           <button type="submit" value="submit" onClick={onMessageSendButton}>Send Invite</button>
         </div>
       )}
-  </div>
-  <div className="flex flex-col">
-    <a className="openModalBtn">Guest List</a>
-      <Modal />
-  
+    <div className="flex flex-col">
+      <button className="openModalBtn" onClick={() => {setModal(true);}}>
+        Guest List</button>
+      {openModal && <Modal event_id = {event_id} closeModal = {setModal} />}
+     
+    </div>
+ 
 </div>
   
  </>
