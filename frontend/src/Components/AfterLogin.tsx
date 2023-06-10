@@ -38,6 +38,10 @@ export const AfterLogin = () => {
         navigate("/events", {state: {eventID:id}});
     };
 
+    const onRecommendedPotluckIdeasButtonClick = () => {
+        navigate("/recommended");
+    };
+
      const onPotluckButtonclick = (id) => {
          console.log("event id in after login :", id);
          navigate("/manage_potluck", {state: {eventID:id}});
@@ -81,6 +85,7 @@ export const AfterLogin = () => {
 
             <div>
                 <button className="btn btn-primary btn-circle" onClick={onCreateOrEditEventButtonClick.bind(null, null)}>Create Event</button>
+                <button className="btn btn-primary btn-circle" onClick={onRecommendedPotluckIdeasButtonClick}>Recommended Potluck Ideas</button>
             </div>
             <div>
                 <h2>My Potlucks:</h2>

@@ -21,6 +21,11 @@ export function EventRoutesInit(app: FastifyInstance) {
 				const id = req.body.event_id;
 
 				const EventToUpdate = await req.em.findOne(Events, {id});
+				const participant = await req.em.findOne(Participants, {user:user_id});
+
+				if(participant.is_host !== "true"){
+					reply.status(403).send( {message:"You are not authorized to edit this event"});
+				}
 
 				EventToUpdate.event_name= event_name;
 				EventToUpdate.event_location= event_location;
@@ -242,7 +247,7 @@ export function EventRoutesInit(app: FastifyInstance) {
 
 
 			if(partcipantToDelete.is_host !== "true"){
-				reply.status(403).send( {message:"You are not authorized to edit this item"});
+				reply.status(403).send( {message:"You are not authorized to delete this item"});
 			}
 
 			await req.em.remove(item_list).flush();

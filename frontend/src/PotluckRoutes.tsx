@@ -10,6 +10,7 @@ import {Logout} from "@/Components/Logout.tsx";
 import {AfterLogin} from "@/Components/AfterLogin.tsx";
 import {CreateEvent} from "@/Components/CreateEvent.tsx";
 import {ManagePotluck} from "@/Components/ManagePotluck.tsx";
+import {RecommendedPotluck} from "@/Components/RecommendedPotluck.tsx";
 
 
 export function PotluckRouter() {
@@ -36,6 +37,7 @@ export function PotluckRouter() {
                     <Route path="/" element={<Home />} />
                     <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
                     <Route path="/after_login" element={<AfterLogin />} />
+                    <Route path="/recommended" element={<RecommendedPotluck />} />
                     <Route path="/manage_potluck" element={<ManagePotluck />} />
                     <Route path="/events" element={<CreateEvent />} />
                     <Route path="/Login" element={<Login />} />

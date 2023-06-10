@@ -5,12 +5,14 @@ Simple app to render a map and show places of interests based on the address ent
 from flask import Flask, render_template, request, url_for, redirect
 from googleapiclient.discovery import build
 from dotenv import load_dotenv
+from flask_cors import CORS, cross_origin
 import os
 
 load_dotenv()
 
 
-app = Flask(__name__, static_url_path='/static')       # our Flask app
+app = Flask(__name__)   # our Flask app
+CORS(app)
 youtube = build('youtube', 'v3', developerKey=os.getenv('YOUTUBE_API_KEY'))
 
 
@@ -27,19 +29,19 @@ def youtube_search_keyword(query, max_results):
             video_id = result["id"]["videoId"]
             video_url = f"https://www.youtube.com/watch?v={video_id}"
             video_title = result["snippet"]["title"]
-            video_info = f"{video_title} - {video_url}"
+            video_info = {"title":video_title, "url":video_url}
             videos.append(video_info)
-                        
-    print("videos:\n", "\n".join(videos), "\n")
+
     return videos
 
 
-@app.route('/')
-def index():
+@app.route('/recommended', methods = ['GET'])
+@cross_origin()
+def recommended():
     query = 'potluck recipe ideas'
     max_results = 10
     videos = youtube_search_keyword(query, max_results)
-    return render_template('index.html', videos=videos)
+    return videos
 
                                   
 if __name__ == '__main__':

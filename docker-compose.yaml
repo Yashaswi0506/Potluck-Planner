@@ -74,6 +74,16 @@ services:
         - API_HOST=backend
         - PORT=8080
 
+
+  microservice:
+      container_name: microservice
+      build: ./microservice/
+      restart: always
+      ports:
+        - "8000:8000"
+      environment:
+        - YOUTUBE_API_KEY=AIzaSyBip8ls2dIG00hWN29jzAan5EAwO126oJI
+
 volumes:
    minio_data:
       driver: local
