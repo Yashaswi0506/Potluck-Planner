@@ -14,7 +14,11 @@ export enum UserRole {
 
 
 @Entity({ tableName: "users"})
-export class User extends BaseEntity {	
+export class User {
+	@Property({primary:true})
+	@Unique()
+	id!: string;
+	
 	@Property()
 	@Unique()
 	email!: string;
@@ -25,6 +29,12 @@ export class User extends BaseEntity {
 	@Enum(() => UserRole)
 	role!: UserRole;
 	
+	@Property()
+	created_at = new Date();
+	
+	@Property({ onUpdate: () => new Date() })
+	updated_at = new Date();
+	
 	@OneToMany(
 		() => Participants,
 		participants => participants.user,
@@ -32,27 +42,30 @@ export class User extends BaseEntity {
 	)
 guest!: Collection<Participants>;
 	
-	
-	@OneToMany(
-		() => Notification,
-		notification => notification.host,
-		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
-	)
-sent_by!: Collection<Notification>;
-
-	@OneToMany(
-		() => Notification,
-		notification => notification.participant,
-		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
-	)
-received_by!: Collection<Notification>;
-	
 	@OneToMany(
 		() => FoodItems,
 		fooditem => fooditem.claim,
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
 	)
 	eventMenu!: Collection<FoodItems>;
+	
+	
+	@OneToMany(
+		() => Notification,
+		notification => notification.host,
+		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
+	)
+	sent_by!: Collection<Notification>;
+	
+	@OneToMany(
+		() => Notification,
+		notification => notification.participant,
+		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
+	)
+	received_by!: Collection<Notification>;
+	
+	
+
 
 
 

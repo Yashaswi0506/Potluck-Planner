@@ -3,7 +3,7 @@ import { BaseEntity } from "./BaseEntity.js";
 import {FoodItems} from "./FoodItem.js";
 import {User} from "./User.js";
 import {Participants} from "./Participant.js";
-import {Notification} from "./Notification.js";
+//import {Notification} from "./Notification.js";
 
 @Entity({ tableName: "events"})
 export class Events extends BaseEntity {
@@ -26,20 +26,15 @@ export class Events extends BaseEntity {
 	)
 	guest!: Collection<Participants>;
 	
-	@OneToMany(
-		() => Notification,
-		notification => notification.eventId,
-		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
-	)
-	eventDetails!: Collection<Notification>;
-	
 	
 	@OneToMany(
 		() => FoodItems,
 		fooditem => fooditem.event,
 		{cascade: [Cascade.PERSIST, Cascade.REMOVE]}
 	)
+	
 	eventMenu!: Collection<FoodItems>;
+	
 	
 	
 	

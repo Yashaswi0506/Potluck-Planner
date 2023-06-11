@@ -63,7 +63,6 @@ export function EventRoutesInit(app: FastifyInstance) {
 			return reply.status(500).send({message: err.message});
 		}
 		finally {
-
 			if(newEvent){
 				console.log("user id in finally  :", user_id);
 				const newParticipant
@@ -79,8 +78,6 @@ export function EventRoutesInit(app: FastifyInstance) {
  			}
 
 		}
-
-
 	});
 	
 	
@@ -164,7 +161,6 @@ export function EventRoutesInit(app: FastifyInstance) {
 					event_location: theEvent[0].event_location,
 					event_date: theEvent[0].event_date,
 					is_host: entry.is_host,
-
 				});
 			}
 			//find events corresponding to all the event id
@@ -184,7 +180,6 @@ export function EventRoutesInit(app: FastifyInstance) {
 		try {
 			//find user with given email id
 			const event = await req.em.find(Events, {id:event_id});
-
 			if (!event) {
 				// If user with the given email doesn't exist, return an appropriate response
 				reply.status(404).send("event not found");
@@ -194,13 +189,13 @@ export function EventRoutesInit(app: FastifyInstance) {
 			console.log("Event found");
 			reply.send(event);
 
-			}catch (err) {
+			} catch (err) {
+
 			console.error(err);
 			reply.status(500).send(err);
 		}
 	});
 
-	
 	//update an event
 	// UPDATE
 	app.put<{Body: {event_id, event_name:string, event_location:string, event_date:string}}>("/events", async(req, reply) => {
@@ -227,7 +222,7 @@ export function EventRoutesInit(app: FastifyInstance) {
 	
 	
 	//Delete an event
-	app.delete<{ Body: { event_id: number; host_id: number} }>("/events", async (req, reply) => {
+	app.delete<{ Body: { event_id: number; host_id: string} }>("/events", async (req, reply) => {
 		const { event_id, host_id } = req.body;
 
 		try {
@@ -255,11 +250,8 @@ export function EventRoutesInit(app: FastifyInstance) {
 			await req.em.remove(partcipantToDelete).remove(theEventToDelete)
 				.flush();
 
-			console.log("event deleted sucessfully");
-			return reply.send(theEventToDelete);
 		} catch (err) {
 			return reply.status(500).send(err);
 		}
 	});
-
 }

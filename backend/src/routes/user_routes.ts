@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { User, UserRole } from "../db/entities/User.js";
 import { ICreateUsersBody, IUpdateUsersBody } from "../types.js";
 import { SOFT_DELETABLE_FILTER } from "mikro-orm-soft-delete";
+import {verifyToken} from "../plugins/verifyTokenConfig.js";
 
 export function UserRoutesInit(app: FastifyInstance) {
 	// Route that returns all users, soft deleted and not
@@ -24,15 +25,16 @@ export function UserRoutesInit(app: FastifyInstance) {
 	// User CRUD
 	// Refactor note - We DO use email still for creation!  We can't know the ID yet
 	app.post<{ Body: ICreateUsersBody }>("/users", async (req, reply) => {
-		const { name, email } = req.body;
-
+		const { id, name, email } = req.body;
+		
 		try {
 			const newUser = await req.em.create(User, {
+				id,
 				name,
 				role: UserRole.USER,
 				email,
 			});
-
+			
 			await req.em.flush();
 			return reply.send(newUser);
 		} catch (err) {
@@ -42,14 +44,16 @@ export function UserRoutesInit(app: FastifyInstance) {
 
 	//READ
 	app.search("/users", async (req, reply) => {
-		const { id } = req.body;
-
-		try {
-			const theUser = await req.em.findOneOrFail(User, id, { strict: true });
-			reply.send(theUser);
-		} catch (err) {
-			reply.status(500).send(err);
-		}
+		const {id} = req.body;
+			
+			try {
+				const users = await req.em.find(User, {id: {$in: id}});
+				const hostnames = users.map((user) => ({id: user.id, hostname: user.name}));
+				reply.send(hostnames);
+			} catch (err) {
+				reply.status(500).send(err);
+			}
+		
 	});
 
 	// UPDATE
@@ -65,7 +69,7 @@ export function UserRoutesInit(app: FastifyInstance) {
 	});
 
 	// DELETE
-	app.delete<{ Body: { my_id: number; id_to_delete: number; password: string } }>(
+	app.delete<{ Body: { my_id: string; id_to_delete: string; password: string } }>(
 		"/users",
 		async (req, reply) => {
 			const { my_id, id_to_delete, password } = req.body;
@@ -96,4 +100,40 @@ export function UserRoutesInit(app: FastifyInstance) {
 			}
 		}
 	);
+	
+	app.post<{
+		Body: {
+			uid:string
+		}, Headers: {
+			'Authorization' : string
+		}
+	}>("/login", async (req, reply) => {
+		const { uid } = req.body;
+		const token= req.headers.authorization.replace('Bearer ', '');
+		console.log(token);
+		try {
+			if (uid != null && token != null) {
+				
+				const authorization = await verifyToken(token, uid);
+				console.log(authorization);
+				console.log("done");
+				
+				if (authorization.user_id != uid) {
+					return reply.status(403).send("unauthorized");
+				} else {
+					return reply.status(200).send("authorized");
+				}
+			}
+		}
+		
+		catch (e)
+			{
+				return reply.status(401);
+			}
+			
+		
+		
+		
+		
+	});
 }

@@ -4,6 +4,7 @@ import {EventSeeder} from "./EventSeeder.js";
 import {FoodItemSeederSeeder} from "./FoodItemSeeder.js";
 import {ParticipantSeeder} from "./ParticipantSeeder.js";
 import {UserSeeder} from "./UserSeeder.js";
+import {NotificationSeeder} from "./NotificationSeeder.js";
 
 export class DatabaseSeeder extends Seeder {
 
@@ -12,7 +13,8 @@ export class DatabaseSeeder extends Seeder {
 			UserSeeder,
 			EventSeeder,
 			ParticipantSeeder,
-			FoodItemSeederSeeder
+			FoodItemSeederSeeder,
+			NotificationSeeder
 		]);
 	}
 

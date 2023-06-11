@@ -1,9 +1,8 @@
-//import { CreateProfile } from "@/Components/CreateProfile.tsx";
-import { Home } from "@/Components/HomePage.tsx";
+
 import { ProtectedRoute } from "@/Components/ProtectedRoute.tsx";
 import {Signup} from "@/Components/Signup.tsx";
 import {Login} from "@/Components/Login.tsx";
-import { UserAuthContextProvider } from "@/Context/AuthContext.tsx";
+import {UserAuthContextProvider, useUserAuth} from "@/Context/AuthContext.tsx";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import {Notifications} from "@/Components/Notifications.tsx";
 import {Logout} from "@/Components/Logout.tsx";
@@ -11,9 +10,12 @@ import {AfterLogin} from "@/Components/AfterLogin.tsx";
 import {CreateEvent} from "@/Components/CreateEvent.tsx";
 import {ManagePotluck} from "@/Components/ManagePotluck.tsx";
 import {RecommendedPotluck} from "@/Components/RecommendedPotluck.tsx";
+import {Home} from "@/Components/HomePage.tsx";
 
 
 export function PotluckRouter() {
+    const auth = useUserAuth();
+    console.log(auth);
     return (
         <div className={"potluckfancy"}>
             <nav className="bg-blue-800 rounded-b shadow-lg mb-4">
@@ -22,10 +24,19 @@ export function PotluckRouter() {
 
                         <ul className={"menu menu-horizontal"}>
                             <li><Link to="/">Home</Link></li>
-                            <li><Link to="/Login">Login</Link></li>
-                            <li><Link to="/Singup">Signup</Link></li>
+                            {auth?.user!= null ? (
+                                <li><Link to="/logout">Logout</Link></li>
+                            ) : (
+                                <>
+                                    <li><Link to="/login"> Login</Link></li>
+                                    <li><Link to="/signup"> Create Account</Link> </li>
+                                </>
+                            )}
+
                             <li><Link to="/notifications">Notifications</Link></li>
-                            <li><Link to="/Logout">Logout</Link></li>
+                            <li><Link to="/after_login">My Potlucks</Link></li>
+
+
                         </ul>
 
 
