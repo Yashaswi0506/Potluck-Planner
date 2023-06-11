@@ -5,7 +5,7 @@
 
 
 import { useUserAuth } from "@/Context/AuthContext.tsx";
-import {AuthenticatedUser, ProfileType} from "@/PotluckTypes.ts";
+//import {AuthenticatedUser, ProfileType} from "@/PotluckTypes.ts";
 import {Route, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";

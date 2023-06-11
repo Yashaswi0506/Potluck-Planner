@@ -27,6 +27,5 @@ export const HttpClientSearch = (url, data) => {
 
 
 
-  
 
 

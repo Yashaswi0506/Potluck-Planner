@@ -1,7 +1,7 @@
 import { useUserAuth } from "@/Context/AuthContext.tsx";
 import { auth } from "@/firebaseSetup.ts";
 import { httpClient } from "@/Services/HttpClient.tsx";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {Button, Form} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 //import{CreateUserService} from "../Services/CreateUserService.tsx";
@@ -11,46 +11,60 @@ export enum SubmissionStatus {
   SubmitFailed,
   SubmitSucceeded
 }
-export const Signup = () =>
-{
+
+
+export const Signup = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError]= useState("");
+  const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(SubmissionStatus.NotSubmitted);
-  const {signUp  } = useUserAuth();
-  const {logOut} = useUserAuth();
-  const navigate =useNavigate();
-  const [uid , setUID] = useState("");
-  const {user} = useUserAuth();
+  const { signUp, user } = useUserAuth();
+  const navigate = useNavigate();
+  const [uid, setUID] = useState("");
+  const [signInDB, setSignInDB] = useState(false);
   
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    try{
-      await signUp(email,password);
-      //navigate("/");
-      //console.log(user.uid);
-      const id = user.uid;
-      
-      
-      
-      await httpClient.post("/users", {id,name, email})
-        .then( (response) => {
-          console.log("User Creation Status", response.status);
-          if (response.status === 200) {
-            setSubmitted(SubmissionStatus.SubmitSucceeded);
-          } else {
-            setSubmitted(SubmissionStatus.SubmitFailed);
-          }
-        });
-      
-      
-    } catch(err) {
+    try {
+      await signUp(email, password).then((signInUser) => {
+        setSignInDB(true);
+        setUID(signInUser.user.uid);
+      });
+    } catch (err) {
       setError(err.message);
     }
-    
-  };;
+  };
+  
+  useEffect(() => {
+    if (signInDB && uid !== "") {
+      const createUser = async () => {
+        await httpClient
+          .post("/users", { id: uid, name, email })
+          .then((response) => {
+            console.log("User Creation Status", response.status);
+            if (response.status === 200) {
+              setSubmitted(SubmissionStatus.SubmitSucceeded);
+            } else {
+              setSubmitted(SubmissionStatus.SubmitFailed);
+            }
+          });
+      };
+      
+      createUser().then(() => {
+        navigate("/");
+      });
+      
+      setSignInDB(false);
+    }
+  }, [signInDB, uid, name, email, navigate]);
+  
+  
+  
+  
+  
+  
   
   return(
     <>
@@ -66,7 +80,7 @@ export const Signup = () =>
             
             />
           </Form.Group>
-         
+          
           <Form.Group className="mb-3" controlId="formBasicName">
             <Form.Control
               type="text"

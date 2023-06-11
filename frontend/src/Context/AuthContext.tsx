@@ -15,7 +15,6 @@ interface UserAuthContextValue {
   signUp: (email: string, password: string) => Promise<any>;
   logOut: () => Promise<void>;
   authorization: string;
-  
 }
 
 const userAuthContext = createContext<UserAuthContextValue | null>(null);
@@ -45,11 +44,17 @@ export function UserAuthContextProvider({ children }: { children: React.ReactNod
       if (currentUser != null) {
         currentUser
           .getIdToken()
-          .then((token) => setIdToken(token))
+          .then((token) => {
+            setIdToken(token);
+            return VerifyTokenService(token, currentUser.uid);
+          })
+          .then((response) => setAuthorization(response.data))
           .catch((error) => {
             console.log("Error getting ID token:", error);
             setIdToken(null);
           });
+      } else {
+        setIdToken(null);
       }
     });
     
@@ -57,17 +62,6 @@ export function UserAuthContextProvider({ children }: { children: React.ReactNod
       unsubscribe();
     };
   }, []);
-  
-  useEffect(() => {
-    if (idToken != null && user && user.uid) {
-      VerifyTokenService(idToken, user.uid)
-        .then((response) => setAuthorization(response.data))
-        .catch((error) => {
-          // Handle any errors
-          console.error(error);
-        });
-    }
-  }, [idToken, user]);
   
   return (
     <userAuthContext.Provider value={{ user, logIn, signUp, logOut, authorization }}>
