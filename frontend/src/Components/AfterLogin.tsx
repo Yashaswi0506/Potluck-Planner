@@ -61,7 +61,7 @@ export const AfterLogin = () => {
         url: "http://localhost:8080/events",
         headers: {"Access-Control-Allow-Origin": "*"},
         data: {
-          event_id:id, host_id:email
+          event_id:id, host_id:
         }
         
       });

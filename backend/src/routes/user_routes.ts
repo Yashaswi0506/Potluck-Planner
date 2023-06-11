@@ -118,7 +118,7 @@ export function UserRoutesInit(app: FastifyInstance) {
 				console.log(authorization);
 				console.log("done");
 				
-				if (authorization.user_id != uid) {
+				if (authorization.toString().includes(uid)) {
 					return reply.status(403).send("unauthorized");
 				} else {
 					return reply.status(200).send("authorized");

@@ -28,8 +28,6 @@ export const verifyToken = async (token, uid) => {
       audience: "potluck-planner-719aa",
       issuer: "https://securetoken.google.com/potluck-planner-719aa",
       subject: uid,
-      
-      
       });
   } catch (error) {
     console.log("Errpr");

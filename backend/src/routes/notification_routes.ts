@@ -58,7 +58,7 @@ export function NotificationRoutesInit(app: FastifyInstance) {
 		const token= req.headers.authorization.replace('Bearer ', '');
 		const authorization = await verifyToken(token, participant_id);
 		
-		if (authorization.user_id != participant_id) {
+		if (!authorization.toString().includes(participant_id)) {
 			return reply.status(403).send("unauthorized");
 		} else {
 			

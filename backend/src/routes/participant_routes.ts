@@ -5,6 +5,7 @@ import { User, UserRole } from "../db/entities/User.js";
 import {verifyToken} from "../plugins/verifyTokenConfig.js";
 import {ICreateParticipantBody, IFindIsHost, IUpdateRSVP, IUpdateUsersBody} from "../types.js";
 import { Events } from "../db/entities/event.js";
+import {JwtPayload} from "jsonwebtoken";
 
 export function ParticipantRoutesInit(app: FastifyInstance) {
 	app.post<{ Body: ICreateParticipantBody }>("/participants", async (req, reply) => {
@@ -84,7 +85,7 @@ export function ParticipantRoutesInit(app: FastifyInstance) {
 		const token= req.headers.authorization.replace('Bearer ', '');
 		const authorization = await verifyToken(token, participant_id);
 		
-		if (authorization.user_id != participant_id) {
+		if (!authorization.toString().includes(uid)) {
 			return reply.status(403).send("unauthorized");
 		} else {
 			try {

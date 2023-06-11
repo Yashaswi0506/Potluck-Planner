@@ -51,9 +51,9 @@ export function PotluckRouter() {
                     <Route path="/recommended" element={<RecommendedPotluck />} />
                     <Route path="/manage_potluck" element={<ManagePotluck />} />
                     <Route path="/events" element={<CreateEvent />} />
-                    <Route path="/Login" element={<Login />} />
-                    <Route path="/Singup" element={<Signup />} />
-                    <Route path="/Logout" element={<Logout />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/singup" element={<Signup />} />
+                    <Route path="/logout" element={<Logout />} />
 
                 </Routes>
             </UserAuthContextProvider>
