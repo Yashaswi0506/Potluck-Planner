@@ -1,11 +1,17 @@
+import {useUserAuth} from "@/Context/AuthContext.tsx";
 import { HttpClientSearch } from "@/Services/HttpClient.tsx";
 import axios from "axios";
 
 const serverIP = import.meta.env.API_HOST;
 const serverPort = import.meta.env.PORT;
 
+
 export const RetrieveNotificationService = {
-  async send(participant__id: string) {
+  
+  
+  
+  async send(participant__id: string , token) {
+    console.log(token);
     console.log("Notification uid", participant__id);
     const data = JSON.stringify({
       participant_id: participant__id
@@ -17,6 +23,7 @@ export const RetrieveNotificationService = {
       url: `http://${serverIP}:${serverPort}/notifications/view`,
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
         'Access-Control-Allow-Origin': '*'
       },
       data: data

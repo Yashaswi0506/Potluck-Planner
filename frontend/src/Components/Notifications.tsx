@@ -1,5 +1,6 @@
 import { useUserAuth , UserAuthContextProvider} from "@/Context/AuthContext.tsx";
 import { Host, Message, NotificationProps, Participant } from "@/PotluckTypes.ts";
+import {setUserAuth} from "@/Services/HttpClient.tsx";
 import { RetrieveNames } from "@/Services/RetrieveNames.tsx";
 import { UpdateRSVPService } from "@/Services/UpdateRSVP.tsx";
 import { VerifyTokenService } from "@/Services/VerifyTokenService.tsx";
@@ -19,14 +20,16 @@ import {auth} from "../firebaseSetup.ts";
     const [selectedOption, setSelectedOption] = useState('');
     const [hostname, setHost] = useState<Host[]>([]);
     const [eventId, setEventId] = useState("");
- 
+    const [token, setToken] = useState("");
     
-    
+    const {idToken} = useUserAuth();
     
     
     
     useEffect(() => {
+      
       if (auth.user && auth.user.uid) {
+        
         fetchNotifications(auth.user.uid);
         //fetchEventDates(auth.user.id);
         
@@ -41,14 +44,16 @@ import {auth} from "../firebaseSetup.ts";
       try {
         console.log("sending req");
         console.log(id);
-        await RetrieveNotificationService.send(id)
+        
+       
+        await RetrieveNotificationService.send(id, idToken)
           .then((response) => {
             (setMessages(response));
             console.log(response);
             const hostIds = response.map((message) => message.host);
             console.log(hostIds);
             
-            RetrieveNames.send(hostIds)
+            RetrieveNames.send(hostIds, idToken, id)
               .then((hostnames) => {
                 console.log(hostnames);
                 setHost(hostnames);
@@ -77,7 +82,8 @@ import {auth} from "../firebaseSetup.ts";
      setEventId(eventId);
      console.log(eventId);
      console.log(selectedOption);
-     const response = await UpdateRSVPService.send(eventId, auth.user.uid, value);
+     console.log(token);
+     const response = await UpdateRSVPService.send(eventId, auth.user.uid, value, idToken);
      console.log(response);
    };
      

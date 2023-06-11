@@ -14,6 +14,9 @@ export const httpClient = axios.create({
   },
 });
 
+export const setUserAuth = (token) => {
+  httpClient.defaults.headers.common['Authorization'] = 'Bearer' +token ;
+};
 
 export const HttpClientSearch = (url, data) => {
   return httpClient.request({

@@ -6,13 +6,18 @@ const serverPort = import.meta.env.PORT;
 const serverUrl = `http://${serverIP}:${serverPort}`;
 
 export const RetrieveNames = {
-  async send(id) {
+  async send(id, token, uid) {
     const requestData = {
       id: id
     };
     const config = {
       method : 'search',
       url: serverUrl + "/users",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'Access-Control-Allow-Origin': '*'
+      },
       data: requestData
     };
     return httpClient.request(config)

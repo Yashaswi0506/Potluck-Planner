@@ -50,3 +50,10 @@ export type RSVPList = {
   RSVP_response: string;
 }
 
+export const AuthenticatedUser :ProfileType = {
+  name: "Doglord",
+  email: "email3@email.com",
+  id: 3
+  
+};
+

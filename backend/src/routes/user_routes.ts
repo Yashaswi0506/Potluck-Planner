@@ -44,15 +44,16 @@ export function UserRoutesInit(app: FastifyInstance) {
 
 	//READ
 	app.search("/users", async (req, reply) => {
-		const { id } = req.body;
+		const {id} = req.body;
+			
+			try {
+				const users = await req.em.find(User, {id: {$in: id}});
+				const hostnames = users.map((user) => ({id: user.id, hostname: user.name}));
+				reply.send(hostnames);
+			} catch (err) {
+				reply.status(500).send(err);
+			}
 		
-		try {
-			const users = await req.em.find(User, { id: { $in: id } });
-			const hostnames = users.map((user) => ({ id: user.id, hostname: user.name }));
-			reply.send(hostnames);
-		} catch (err) {
-			reply.status(500).send(err);
-		}
 	});
 
 	// UPDATE

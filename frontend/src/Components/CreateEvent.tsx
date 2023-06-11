@@ -6,6 +6,8 @@ import axios from "axios";
 import { Modal } from "@/Components/Modal.tsx";
 import {useLocation, useNavigate} from "react-router-dom";
 import {SendInvitationService} from "@/Services/SendInvitationService.tsx";
+import {FindhostStatus} from "@/Services/FindhostStatus.tsx";
+
 //import { AuthenticatedUser, Message } from "@/PotluckTypes.ts";
 
 
@@ -25,10 +27,11 @@ export const CreateEvent = () => {
   const [event_created , setEventCreation] = useState("false");
   const[openModal, setModal] = useState(false);
   const user_id = auth.user.uid;
+  const[ishost , sethost] = useState("false");
   
   
   useEffect(() => {
-    
+    sethost("false");
     if(event_id != null) {
       const getEvent = async () => {
         const eventsRes = await axios({
@@ -46,6 +49,21 @@ export const CreateEvent = () => {
         setEventName(value.event_name);
         setEventLocation(value.event_location);
         setEventDate(value.event_date);
+        
+        if(auth.user.uid!=null) {
+          FindhostStatus.send(event_id, auth.user.uid)
+            .then((response) => {
+              sethost(response.data);
+            });
+        }
+        
+     
+      
+        
+      
+        
+        
+      
       });
     }
   }, []);
@@ -175,7 +193,7 @@ export const CreateEvent = () => {
         </div>
       }
     </div>
-      {event_id !=null && (
+      {event_id !=null &&   ishost != "false" &&(
         <div>
           <h2>Invite Guest</h2>
           <textarea

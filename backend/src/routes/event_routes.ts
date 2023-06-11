@@ -4,7 +4,6 @@ import { User, UserRole } from "../db/entities/User.js";
 import { ICreateEventBody } from "../types.js";
 import { Events} from "../db/entities/event.js";
 import { SOFT_DELETABLE_FILTER } from "mikro-orm-soft-delete";
-import {FoodItems} from "../db/entities/FoodItem.js";
 
 
 
@@ -14,30 +13,7 @@ export function EventRoutesInit(app: FastifyInstance) {
 	// CRUD
 	// C
 	app.post<{Body: ICreateEventBody}>("/events", async (req, reply) => {
-		const { event_id, user_id, event_name, event_location, event_date} = req.body;
-		
-		if(event_id != null){
-			try {
-				const id = req.body.event_id;
-				
-				const EventToUpdate = await req.em.findOne(Events, {id});
-				
-				EventToUpdate.event_name= event_name;
-				EventToUpdate.event_location= event_location;
-				EventToUpdate.event_date=event_date;
-				
-				// Reminder -- this is how we persist our JS object changes to the database itself
-				await req.em.flush();
-				console.log("Event updated");
-				reply.send(EventToUpdate);
-			}catch (err){
-				console.error(err);
-				reply.status(401).send(err);
-				
-			}
-			
-			return reply.send({message: "Event Updated"});
-		}
+		const { user_id, event_name, event_location, event_date} = req.body;
 		
 		
 		
@@ -229,27 +205,17 @@ export function EventRoutesInit(app: FastifyInstance) {
 			const theEventToDelete = await req.em.findOneOrFail(Events, event_id, {strict: true});
 			
 			// Make sure the requester is host
-			const partcipantToDelete = await req.em.findOne(Participants, {user:host_id, event:event_id});
-			
-			const  item_list = await req.em.find(FoodItems, {event:event_id});
-			if (!item_list) {
-				reply.status(404).send({ message:"Menu does not exist" });
-			}
-			
+			const partcipantToDelete = await req.em.findOne(Participants, {user:host_id});
 			
 			console.log("event to be deleted :", theEventToDelete);
 			console.log("Participant identity :", partcipantToDelete);
-			
 			
 			if(partcipantToDelete.is_host !== "true"){
 				reply.status(403).send( {message:"You are not authorized to edit this item"});
 			}
 			
-			await req.em.remove(item_list).flush();
-			
-			await req.em.remove(partcipantToDelete).remove(theEventToDelete)
-				.flush();
-			
+			await req.em.remove(partcipantToDelete).flush();
+			await req.em.remove(theEventToDelete).flush();
 			console.log("event deleted sucessfully");
 			return reply.send(theEventToDelete);
 		} catch (err) {

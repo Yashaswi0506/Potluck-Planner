@@ -44,8 +44,6 @@ export type ICreateParticipantBody = {
 
 
 export type ICreateFoodItemBody = {
-	participant_id: string,
-	item_id:number,
 	event:number,
 	item_name: string,
 	item_type: string,
@@ -55,7 +53,14 @@ export type ICreateFoodItemBody = {
 export type IUpdateRSVP = {
 	id : number,
 	participant_id : string,
-	rsvp:string
+	rsvp:string,
+	uid:string
 	
 }
+
+export type IFindIsHost ={
+	event:number,
+	participant_id: string
+}
+
 

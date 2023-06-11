@@ -15,6 +15,7 @@ interface UserAuthContextValue {
   signUp: (email: string, password: string) => Promise<any>;
   logOut: () => Promise<void>;
   authorization: string;
+  idToken:string;
 }
 
 const userAuthContext = createContext<UserAuthContextValue | null>(null);
@@ -64,7 +65,7 @@ export function UserAuthContextProvider({ children }: { children: React.ReactNod
   }, []);
   
   return (
-    <userAuthContext.Provider value={{ user, logIn, signUp, logOut, authorization }}>
+    <userAuthContext.Provider value={{ user, logIn, signUp, logOut, authorization , idToken }}>
       {children}
     </userAuthContext.Provider>
   );
