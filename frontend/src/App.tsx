@@ -5,15 +5,15 @@ import {UserAuthContextProvider}  from "@/Context/AuthContext.tsx";
 
 // This is our base React Componentr
 export function App() {
-  return (
-    <BrowserRouter>
-      <UserAuthContextProvider>
-      <div className="App doggr">
-          <PotluckRouter/>
-      </div>
-      </UserAuthContextProvider>
-    </BrowserRouter>
-  );
+    return (
+        <BrowserRouter>
+            <UserAuthContextProvider>
+                <div className="App doggr">
+                    <PotluckRouter/>
+                </div>
+            </UserAuthContextProvider>
+        </BrowserRouter>
+    );
 }
 
 export default App;
