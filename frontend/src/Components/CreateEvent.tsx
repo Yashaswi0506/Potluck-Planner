@@ -57,17 +57,9 @@ export const CreateEvent = () => {
               sethost(response.data);
             });
         }
-        
-     
-      
-        
-      
-        
-        
-      
       });
     }
-  }, []);
+  }, [auth, event_id]);
   
   
   const onSaveEventButtonclick = () => {
@@ -96,14 +88,10 @@ export const CreateEvent = () => {
       }
       else{
         console.log("event not created");
+
       }
-     
-      
+      navigate("/after_login");
     });
-    
-    
-    
-    navigate("/after_login");
   };
   
   const navigate = useNavigate();

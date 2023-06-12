@@ -8,40 +8,39 @@ import { useUserAuth } from "@/Context/AuthContext.tsx";
 import { useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {getAuth} from "firebase/auth";
 
 export const AfterLogin = () => {
 
   
   const [events, setEvents] = useState([]);
   const auth = useUserAuth();
-  const[email, setEmail] = useState("");
-  
-  const getUsers = async (email) => {
-    const eventsRes = await axios({
-      method: 'search',
-      url: "http://localhost:8080/events/attended",
-      headers: {"Access-Control-Allow-Origin": "*"},
-      data: {
-        email: email
-      }
-    });
-    return eventsRes.data;
-  };
-  
+
   useEffect(() => {
-    if (auth.user && auth.user.uid) {
-      setEmail(auth.user.email);
-      getUsers(auth.user.email).then(setEvents);
-      
-    }
+      const getEvents = async () => {
+        const eventsRes = await axios({
+          method: 'search',
+          url: "http://localhost:8080/events/attended",
+          headers: {"Access-Control-Allow-Origin": "*"},
+          data: {
+            email: auth.user.email
+          }
+        });
+        return eventsRes.data;
+      };
+      getEvents().then(setEvents);
     
-  }, []);
+  }, [auth]);
   
   
   const navigate = useNavigate();
   
   const onCreateOrEditEventButtonClick = (id) => {
     navigate("/events", {state: {eventID:id}});
+  };
+
+  const onRecommendedPotluckIdeasButtonClick = () => {
+    navigate("/recommended");
   };
   
   const onPotluckButtonclick = (id) => {
@@ -56,12 +55,15 @@ export const AfterLogin = () => {
   //delete event
   const onDeleteEventButtonclick = (id) => {
     const  delete_event_req= async () => {
+      console.log("Inside delete function");
+      console.log(auth);
       const result = await axios({
         method: 'delete',
         url: "http://localhost:8080/events",
         headers: {"Access-Control-Allow-Origin": "*"},
         data: {
-          event_id:id, host_id:
+          event_id:id,
+          host_id: auth.user.uid
         }
         
       });
@@ -87,6 +89,7 @@ export const AfterLogin = () => {
       
       <div>
         <button className="btn btn-primary btn-circle" onClick={onCreateOrEditEventButtonClick.bind(null, null)}>Create Event</button>
+        <button className="btn btn-primary btn-circle" onClick={onRecommendedPotluckIdeasButtonClick}>Recommended Potluck Ideas</button>
       </div>
       <div>
         <h2>My Potlucks:</h2>
