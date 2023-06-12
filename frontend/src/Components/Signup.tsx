@@ -67,11 +67,16 @@ export const Signup = () => {
   
   return(
     <>
-      <div className="p-4 box">
-        <h2 className="mb-3">Firebase Auth Signup</h2>
+      <div className="relative flex flex-col items-center">
+        <div className="w-full p-6 m-auto bg-white rounded-md shadow-md lg:max-w-xl mt-50">
+          <h3 className="text-3xl font-semibold text-center text-700">
+            Sign Up
+          </h3>
         
-        <Form onSubmit = {handleSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form onSubmit = {handleSubmit} className = "space-y-4">
+          <div className="flex flex-col items-center">
+          <Form.Group className="flex items-center mb-3" controlId="formBasicEmail">
+            <Form.Label className="mr-2"> Email Id</Form.Label>
             <Form.Control
               type="email"
               placeholder="Email address"
@@ -79,8 +84,11 @@ export const Signup = () => {
             
             />
           </Form.Group>
+            
           
-          <Form.Group className="mb-3" controlId="formBasicName">
+          
+          <Form.Group className="flex items-center mb-3" controlId="formBasicName">
+            <Form.Label className="mr-2"> Username</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter Name"
@@ -89,7 +97,8 @@ export const Signup = () => {
             />
           </Form.Group>
           
-          <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Group className="flex items-center mb-3" controlId="formBasicPassword">
+            <Form.Label className="mr-2"> Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Password"
@@ -103,11 +112,14 @@ export const Signup = () => {
               Sign up
             </Button>
           </div>
+          </div>
         </Form>
-      </div>
-      <div className="p-4 box mt-3 text-center">
+    <hr/>
+      <div className="p-4 text-center">
         Already have an account? <Link to="/login">Log In</Link>
       </div>
+        </div>
+        </div>
     </>
   );
 };

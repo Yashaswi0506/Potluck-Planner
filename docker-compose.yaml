@@ -25,6 +25,7 @@ services:
       - "9000:9000"
       - "9001:9001"
     environment:
+
       - MINIO_DEFAULT_BUCKETS=potluck:public
       - MINIO_ROOT_USER=minioUser
       - MINIO_ROOT_PASSWORD=minioPass
@@ -83,6 +84,19 @@ services:
         - "8000:8000"
       environment:
         - YOUTUBE_API_KEY=AIzaSyBip8ls2dIG00hWN29jzAan5EAwO126oJI
+
+        - DB_HOST=postgres
+        - DB_PORT=5432
+        - DB_NAME=potluck
+        - DB_USER=potluck
+        - DB_PASS=potluck
+        - HOST=0.0.0.0
+        - PORT=8080
+        - PASSWORD=password
+        - NODE_ENV=development
+      depends_on:
+        postgres:
+          condition: service_healthy
 
 
 volumes:
