@@ -7,8 +7,6 @@ import {Participants} from "./Participant.js";
 
 @Entity({ tableName: "events"})
 export class Events extends BaseEntity {
-
-
 	
 	@Property()
 	event_name: string;
@@ -34,8 +32,5 @@ export class Events extends BaseEntity {
 	)
 	
 	eventMenu!: Collection<FoodItems>;
-	
-	
-	
-	
+
 }

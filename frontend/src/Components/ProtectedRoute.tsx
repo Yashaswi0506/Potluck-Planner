@@ -7,8 +7,6 @@ export const ProtectedRoute = ({ children }) => {
   const auth = useUserAuth();
   try {
     
-    
-    
     console.log("Check user in Private: ", user);
     if (auth.user.authorization != 'authorized' && !user) {
       console.log(auth.user.authorization);
