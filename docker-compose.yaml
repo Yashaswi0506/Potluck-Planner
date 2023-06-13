@@ -99,6 +99,29 @@ services:
           condition: service_healthy
 
 
+  frontend:
+    container_name: frontend
+    build: ./frontend/
+    restart: always
+    ports:
+      - "88:80"
+    environment:
+      - API_HOST=backend
+      - PORT=8080
+
+
+  microservice_maps:
+    container_name: microservice_maps
+    build: ./microservice_maps/
+    restart: always
+    ports:
+      - "7000:7000"
+    environment:
+      - MAPS_API_KEY=AIzaSyBuG4EgXWPQsSBc84IsP1KIsB81oiNGgBU
+
+
+
+
 volumes:
    minio_data:
       driver: local
