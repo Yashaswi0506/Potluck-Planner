@@ -37,8 +37,8 @@ export function PotluckRouter() {
                                 </>
                             )}
 
-                            <li><Link to="/notifications">Notifications</Link></li>
-                            <li><Link to="/after_login">My Potlucks</Link></li>
+                            <li className = "nav-link block hover:text-blue-300 hover:no-underline focus:text-blue-300 focus:no-underline"><Link to="/notifications">Notifications</Link></li>
+                            <li className = "nav-link block hover:text-blue-300 hover:no-underline focus:text-blue-300 focus:no-underline"><Link to="/after_login">My Potlucks</Link></li>
 
 
                         </ul>
@@ -51,12 +51,12 @@ export function PotluckRouter() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
-                    <Route path="/after_login" element={<AfterLogin />} />
-                    <Route path="/recommended" element={<RecommendedPotluck />} />
-                    <Route path="/manage_potluck" element={<ManagePotluck />} />
+                    <Route path="/after_login" element={<ProtectedRoute><AfterLogin /></ProtectedRoute>} />
+                    <Route path="/recommended" element={<ProtectedRoute><RecommendedPotluck /></ProtectedRoute>} />
+                    <Route path="/manage_potluck" element={<ProtectedRoute><ManagePotluck /></ProtectedRoute>} />
                     <Route path="/events" element={<CreateEvent />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/singup" element={<Signup />} />
+                    <Route path="/signup" element={<Signup />} />
                     <Route path="/logout" element={<Logout />} />
 
                 </Routes>

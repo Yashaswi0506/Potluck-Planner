@@ -48,19 +48,11 @@ export function NotificationRoutesInit(app: FastifyInstance) {
 	
 	//View Notification
 	app.search<{
-		Body: IViewNotificationBody, Headers: {
-			'Authorization': string
-		}
+		Body: IViewNotificationBody
 	}>("/notifications/view", async (req, reply) => {
 		
 		const {participant_id} = req.body;
-		console.log(req.headers.authorization);
-		const token= req.headers.authorization.replace('Bearer ', '');
-		const authorization = await verifyToken(token, participant_id);
-		
-		if (!authorization.toString().includes(participant_id)) {
-			return reply.status(403).send("unauthorized");
-		} else {
+	
 			
 			try {
 				const receiverEntity = await req.em.getReference(User, participant_id);
@@ -70,7 +62,7 @@ export function NotificationRoutesInit(app: FastifyInstance) {
 			} catch (err) {
 				return reply.status(500).send({message: err.message});
 			}
-		}
+		
 	});
 }
 

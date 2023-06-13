@@ -78,16 +78,9 @@ export function ParticipantRoutesInit(app: FastifyInstance) {
 	
 
 	
-	app.put<{ Body: IUpdateRSVP , Headers: {
-		'Authorization': string}}> ("/participants/rsvp", async (req, reply) => {
+	app.put<{ Body: IUpdateRSVP}> ("/participants/rsvp", async (req, reply) => {
 		const { id, participant_id, rsvp,uid } = req.body;
-		console.log(req.headers.authorization);
-		const token= req.headers.authorization.replace('Bearer ', '');
-		const authorization = await verifyToken(token, participant_id);
 		
-		if (!authorization.toString().includes(uid)) {
-			return reply.status(403).send("unauthorized");
-		} else {
 			try {
 				//const participantEntity = req.em.getRepository(Participants);
 				const participantDetails = await req.em.findOneOrFail(Participants, {event: id, user: participant_id});
@@ -104,6 +97,6 @@ export function ParticipantRoutesInit(app: FastifyInstance) {
 			} catch (err) {
 				reply.status(500).send(err);
 			}
-		}
+		
 	});
 }

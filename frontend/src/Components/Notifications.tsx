@@ -36,6 +36,7 @@ export const Notifications = () => {
       fetchNotifications(auth.user.uid);
       //fetchEventDates(auth.user.id);
     }
+    
   }, [auth.user]);
 
   const fetchNotifications = async (id) => {
