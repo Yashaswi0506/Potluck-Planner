@@ -8,14 +8,18 @@ load_dotenv()
 
 app = Flask(__name__)
 
+cors = CORS(app , origins = "*")
+
 search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
 details_url = "https://maps.googleapis.com/maps/api/place/details/json"
 
 key = os.getenv('MAPS_API_KEY')
 
 @app.route('/location' , methods=['POST'])
+@cross_origin()
 def results():
-    location = request.json
+    location = request.get_json().get('location')
+    print("location", location)
     search_payload = {"key":key, "query":location}
     search_req = requests.get(search_url, params=search_payload)
     search_json = search_req.json()

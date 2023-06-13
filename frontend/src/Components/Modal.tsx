@@ -2,6 +2,7 @@ import { RSVPList, user } from "@/PotluckTypes.ts";
 import { DisplayRSVPStatus } from "@/Services/DisplayRSVPStatus.tsx";
 import React, { useEffect, useState } from "react";
 
+
 export const Modal = ({ event_id, closeModal }) => {
   const [list, setList] = useState<RSVPList[]>([]);
   const displayParticipants = async (event_id) => {
@@ -18,37 +19,39 @@ export const Modal = ({ event_id, closeModal }) => {
   return (
     <>
       <div className="modalBackground"></div>
-      <div className="modalContainer">
+      <div className="modalContainer flex justify-center items-center">
         <div className="titleCloseBtn">
           <button
             onClick={() => {
               closeModal(false);
             }}
+            className="btn btn-ghost"
           >
             X
           </button>
         </div>
         <div className="title"></div>
-        <h2>{event_id}</h2>
+        
         <div className="body">
-          <table>
+          <table className="w-1/5 table">
             <thead>
-              <tr>
-                <td>Name</td>
-                <td>RSVP</td>
-              </tr>
+            <tr>
+              <td>Name</td>
+              <td>RSVP</td>
+            </tr>
             </thead>
             <tbody>
-              {list.map((item) => (
-                <tr key={`${item.user.name}-${item.RSVP_response}`}>
-                  <td>{item.user.name}</td>
-                  <td>{item.RSVP_response}</td>
-                </tr>
-              ))}
+            {list.map((item) => (
+              <tr key={`${item.user.name}-${item.RSVP_response}`}>
+                <td>{item.user.name}</td>
+                <td>{item.RSVP_response}</td>
+              </tr>
+            ))}
             </tbody>
           </table>
         </div>
       </div>
+    
     </>
   );
 };

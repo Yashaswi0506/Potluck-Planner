@@ -16,5 +16,11 @@ COPY . .
 # Expose the port on which your Flask application will run
 EXPOSE 7000
 
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED=1
+
 # Set the entry point command to run your Flask application
-CMD ["python", "app.py"]
+CMD ["python", "-u","app.py"]
