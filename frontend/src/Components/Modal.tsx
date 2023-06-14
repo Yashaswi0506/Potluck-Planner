@@ -18,14 +18,14 @@ export const Modal = ({ event_id, closeModal }) => {
   }, []);
   return (
     <>
-      <div className="modalBackground"></div>
-      <div className="modalContainer flex justify-center items-center">
+      <div className="modalBackground w-full"></div>
+      <div className="modalContainer ">
         <div className="titleCloseBtn">
           <button
             onClick={() => {
               closeModal(false);
             }}
-            className="btn btn-ghost"
+            className="btn btn-ghost ml-auto"
           >
             X
           </button>
@@ -33,11 +33,11 @@ export const Modal = ({ event_id, closeModal }) => {
         <div className="title"></div>
         
         <div className="body">
-          <table className="w-1/5 table">
+          <table className="table w-full">
             <thead>
             <tr>
-              <td>Name</td>
-              <td>RSVP</td>
+              <th className="w-1/2 text-lg">Name</th>
+              <th className="w-1/2 text-lg">RSVP</th>
             </tr>
             </thead>
             <tbody>
@@ -51,6 +51,7 @@ export const Modal = ({ event_id, closeModal }) => {
           </table>
         </div>
       </div>
+    
     
     </>
   );

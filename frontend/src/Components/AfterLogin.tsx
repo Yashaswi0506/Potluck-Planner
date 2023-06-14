@@ -85,16 +85,16 @@ export const AfterLogin = () => {
   
   
   return (
-    <div className="mx-5">
-      <div>
+    <div >
+      <div className="flex justify-center">
         <button
-          className="btn  btn-lg btn-wide btn-accent"
+          className="btn  btn-lg btn-wide btn-accent  mx-5"
           onClick={onCreateOrEditEventButtonClick.bind(null, null)}
         >
           Create Event
         </button>
         <button
-          className="btn  btn-lg btn-wide btn-accent"
+          className="btn  btn-lg btn-wide btn-accent mx-5"
           onClick={onRecommendedPotluckIdeasButtonClick}
         >
           Recommended Potluck Ideas
@@ -122,7 +122,7 @@ export const AfterLogin = () => {
                       <tr key={event.id}>
                         <th>
                           <button
-                            className="btn btn-primary btn-circle"
+                            className="btn btn-ghost text-blue-500 underline text-base"
                             onClick={onPotluckButtonclick.bind(null, event.id)}
                           >
                             {event.event_name}
@@ -133,7 +133,7 @@ export const AfterLogin = () => {
                         <th>{event.is_host}</th>
                         <th>
                           <button
-                            className="btn btn-primary btn-circle"
+                            className="btn btn-ghost text-blue-500 underline text-base"
                             onClick={onCreateOrEditEventButtonClick.bind(
                               null,
                               event.id
@@ -144,7 +144,7 @@ export const AfterLogin = () => {
                         </th>
                         <th>
                           <button
-                            className="btn btn-primary btn-circle"
+                            className="btn btn-ghost text-blue-500 underline text-base"
                             onClick={onDeleteEventButtonclick.bind(
                               null,
                               event.id

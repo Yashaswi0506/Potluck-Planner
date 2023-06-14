@@ -1,6 +1,6 @@
 import { useUserAuth } from "@/Context/AuthContext.tsx";
 import { AddParticipantService } from "@/Services/AddParticipantsService.tsx";
-import {Maps_Microservices} from "@/Services/Maps_MicroService.tsx";
+import { Maps_Microservices } from "@/Services/Maps_MicroService.tsx";
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -25,11 +25,9 @@ export const CreateEvent = () => {
   const [event_created, setEventCreation] = useState("false");
   const [openModal, setModal] = useState(false);
   const user_id = auth.user.uid;
-  const [ishost, sethost] = useState("false");
-  
+  const [ishost, sethost] = useState(false);
 
   useEffect(() => {
-    //sethost("false");
     if (event_id != null) {
       const getEvent = async () => {
         const eventsRes = await axios({
@@ -50,7 +48,8 @@ export const CreateEvent = () => {
 
         if (auth.user.uid != null) {
           FindhostStatus.send(event_id, auth.user.uid).then((response) => {
-            sethost(response.data);
+            sethost(response);
+            console.log(response);
           });
         }
       });
@@ -100,6 +99,8 @@ export const CreateEvent = () => {
     const message = `It's a Potluck Party! ${event_name} event is organized at ${event_location} on ${event_date}. Please RSVP `;
     console.log(message);
     console.log(guestList);
+    console.log(ishost);
+
     const guestArray_edit = guestList.split(",");
     const guestArray = guestArray_edit.map((str) => str.replace(/\s/g, ""));
     console.log("guestArray", guestArray);
@@ -113,26 +114,19 @@ export const CreateEvent = () => {
     );
     console.log(response1);
   }
-  
-  const onOpenMaps = async() => {
-    if (event_location != '') {
-      
+
+  const onOpenMaps = async () => {
+    if (event_location != "") {
       const response = await Maps_Microservices.send(event_location);
       console.log(response.data.result);
       //const url = response.data.result;
-       window.open(response.data.result,'_blank');
-      
-      
-      
-      
-        
+      window.open(response.data.result, "_blank");
     }
   };
-  
-  
+
   return (
     <>
-      <div className ="flex">
+      <div className="flex">
         <div className="w-1/2 p-4">
           <h2 className="text-4xl text-blue-600 mb-5">
             {event_id ? "Edit Event:" : "Create Event:"}
@@ -205,21 +199,23 @@ export const CreateEvent = () => {
               </div>
             )}
         </div>
+
         
         <div className="w-1/2 flex flex-col">
-          {event_id != null && ishost != "false" && (
+          {event_id !=null && ishost &&(
+          
             <div>
               <h2 className="text-3xl text-blue-600 mb-5">Invite Guest:</h2>
               <div className="flex flex-row items-center mb-5">
-        <textarea
-          className="w-1/2 p-10"
-          id="guestList"
-          name="guestList"
-          placeholder="Enter Guest Email separated by comma"
-          required
-          value={guestList}
-          onChange={(e) => setguestList(e.target.value)}
-        />
+                <textarea
+                  className="w-1/2 p-10"
+                  id="guestList"
+                  name="guestList"
+                  placeholder="Enter Guest Email separated by comma"
+                  required
+                  value={guestList}
+                  onChange={(e) => setguestList(e.target.value)}
+                />
                 <button
                   type="submit"
                   value="submit"
@@ -230,11 +226,10 @@ export const CreateEvent = () => {
                 </button>
               </div>
             </div>
-          )}
-        
-       
-        
-        <div className="mb-5 flex justify-center">
+          
+          )
+          }
+          <div className="mb-5 mt-10 flex justify-center">
             {event_id != null && (
               <div className="w-1/2 mr-5">
                 <button
@@ -245,21 +240,23 @@ export const CreateEvent = () => {
                 >
                   Guest List
                 </button>
-                {openModal && <Modal event_id={event_id} closeModal={setModal} />}
+                {openModal && (
+                  <Modal event_id={event_id} closeModal={setModal} />
+                )}
               </div>
             )}
-            <button
-              className="btn btn-primary mx-2 mt-5 w-1/2 mr-5"
-              value="maps"
-              onClick={onOpenMaps}
-            >
-              Maps
-            </button>
+
+            {event_id != null && (
+              <button
+                className="btn btn-primary mx-2 mt-5 w-1/2 mr-5"
+                value="maps"
+                onClick={onOpenMaps}
+              >
+                Maps
+              </button>
+            )}
           </div>
-        
-        
         </div>
-      
       </div>
     </>
   );
