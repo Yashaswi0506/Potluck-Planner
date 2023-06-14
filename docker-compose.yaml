@@ -9,33 +9,70 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=doggr
-      - POSTGRES_PASSWORD=doggr
-      - POSTGRES_DB=doggr
+      - POSTGRES_USER=potluck
+      - POSTGRES_PASSWORD=potluck
+      - POSTGRES_DB=potluck
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U doggr"]
+      test: ["CMD-SHELL", "pg_isready -U potluck"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   backend:
-    container_name: backend
-    build: ./backend/
-    restart: always
-    ports:
-      - "8080:8080"
-    environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=doggr
-      - DB_USER=doggr
-      - DB_PASS=doggr
-      - PORT=8080
-      - HOST=0.0.0.0
-    depends_on:
-      postgres:
-        condition: service_healthy
+      container_name: backend
+      build: ./backend/
+      restart: always
+      ports:
+        - "8080:8080"
+      environment:
+        - DB_HOST=postgres
+        - DB_PORT=5432
+        - DB_NAME=potluck
+        - DB_USER=potluck
+        - DB_PASS=potluck
+        - PORT=8080
+        - HOST=0.0.0.0
+        - PASSWORD=password
+        - NODE_ENV=development
+        - AUTH_SECRET=supersecret219340818092358
+      depends_on:
+        postgres:
+          condition: service_healthy
+
+  frontend:
+      container_name: frontend
+      build: ./frontend/
+      restart: always
+      ports:
+        - "88:80"
+      environment:
+        - API_HOST=backend
+        - PORT=8080
+
+
+  microservice:
+      container_name: microservice
+      build: ./microservice/
+      restart: always
+      ports:
+        - "8000:8000"
+      environment:
+        - YOUTUBE_API_KEY=AIzaSyBip8ls2dIG00hWN29jzAan5EAwO126oJI
+
+        - DB_HOST=postgres
+        - DB_PORT=5432
+        - DB_NAME=potluck
+        - DB_USER=potluck
+        - DB_PASS=potluck
+        - HOST=0.0.0.0
+        - PORT=8080
+        - PASSWORD=password
+        - NODE_ENV=development
+      depends_on:
+        postgres:
+          condition: service_healthy
+
 
 volumes:
-  db:
-    driver: local
+   db:
+      driver: local

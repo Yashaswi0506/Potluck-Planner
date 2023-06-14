@@ -1,0 +1,78 @@
+name: Potluck CICD
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
+jobs:
+  backend_testing:
+    runs-on: ubuntu-latest
+    env:
+      DB_HOST: 0.0.0.0
+      DB_PORT: 5432
+      DB_NAME: potluck
+      DB_USER: potluck
+      DB_PASS: potluck
+      HOST: localhost
+      PORT: 8080
+      PASSWORD: password
+      NODE_ENV: development
+      AUTH_SECRET: supersecret219340818092358
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: potluck
+          POSTGRES_PASSWORD: potluck
+        options: >-
+          --health-cmd pg_isready  
+          --health-interval 10s  
+          --health-timeout 5s  
+          --health-retries 25
+        ports:
+          - 5432:5432
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+          run_install: false
+
+      ## This is for caching dependencies between job executions
+      - name: Get pnpm dependency directory to put into cache for future jobs
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT  
+
+      - uses: actions/cache@v3
+        name: Actually create the Github Actions cache for those dependencies
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-  
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run Migrations
+        run: pnpm migration:freshSeed
+
+      - name: Run tests
+        run: pnpm test
