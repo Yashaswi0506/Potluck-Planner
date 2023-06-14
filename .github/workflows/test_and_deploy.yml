@@ -20,8 +20,6 @@ jobs:
       PASSWORD: password
       NODE_ENV: development
       AUTH_SECRET: supersecret219340818092358
-      MINIO_HOST: localhost
-      MINIO_PORT: 9000
     services:
       postgres:
         image: postgres:15

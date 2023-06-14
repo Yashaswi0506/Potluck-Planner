@@ -24,16 +24,21 @@ export const RecommendedPotluck = () => {
     }, []);
 
     return (
-        <div className="flex flex-col items-center bg-slate-700 w-4/5 mx-auto p-5 rounded-box">
-            <h1>10 Most Recent Potluck Ideas</h1>
-        <ul>
-            {videos ?
-                videos.map((video: { title: string, url: string}) => (
-                <li><a href={video.url}>{video.title}</a></li>
-                ))
-                : "Not found"}
-
-        </ul>
-    </div>
+         <div className="flex flex-col items-center bg-slate-700 w-4/5 mx-auto p-5 rounded-box">
+              <h1 className="text-white text-2xl font-bold mb-4">10 Most Recent Potluck Ideas</h1>
+              <ul className="flex flex-col gap-2">
+                {videos ? (
+                  videos.map((video) => (
+                    <li key={video.url}>
+                      <a href={video.url} className="text-blue-500 hover:underline">
+                        {video.title}
+                      </a>
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-white">Not found</li>
+                )}
+              </ul>
+            </div>
     );
 };
