@@ -54,5 +54,14 @@ export class FoodItemSeederSeeder extends Seeder {
 			claim: null
 		});
 		
+		em.create(FoodItems, {
+			event: 3,
+			item_name: "Pasta",
+			item_type: "Main course",
+			item_quantity: "2oZ",
+			claim: null
+		});
+		
+		
 	}
 }
