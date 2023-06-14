@@ -53,9 +53,8 @@ export const AfterLogin = () => {
   
   
   //delete event
-  const onDeleteEventButtonclick = (id) => {
+  const onDeleteEventButtonClick = (id) => {
     const  delete_event_req= async () => {
-      console.log("Inside delete function");
       console.log(auth);
       const result = await axios({
         method: 'delete',
@@ -146,7 +145,7 @@ export const AfterLogin = () => {
                         <th>
                           <button
                             className="btn btn-ghost text-blue-500 underline text-base"
-                            onClick={onDeleteEventButtonclick.bind(
+                            onClick={onDeleteEventButtonClick.bind(
                               null,
                               event.id
                             )}

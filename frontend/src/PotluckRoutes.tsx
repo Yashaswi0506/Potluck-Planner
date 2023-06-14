@@ -1,4 +1,3 @@
-//import { CreateProfile } from "@/Components/CreateProfile.tsx";
 import { AfterLogin } from "@/Components/AfterLogin.tsx";
 import { CreateEvent } from "@/Components/CreateEvent.tsx";
 import { ManagePotluck } from "@/Components/ManagePotluck.tsx";

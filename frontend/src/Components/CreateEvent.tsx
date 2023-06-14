@@ -1,7 +1,6 @@
 import { useUserAuth } from "@/Context/AuthContext.tsx";
 import { AddParticipantService } from "@/Services/AddParticipantsService.tsx";
 import { Maps_Microservices } from "@/Services/Maps_MicroService.tsx";
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Modal } from "@/Components/Modal.tsx";
@@ -9,7 +8,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SendInvitationService } from "@/Services/SendInvitationService.tsx";
 import { FindhostStatus } from "@/Services/FindhostStatus.tsx";
 
-//import { AuthenticatedUser, Message } from "@/PotluckTypes.ts";
 
 export const CreateEvent = () => {
   const [event_name, setEventName] = useState("");

@@ -226,10 +226,16 @@ export function EventRoutesInit(app: FastifyInstance) {
 		const { event_id, host_id } = req.body;
 
 		try {
-			const theEventToDelete = await req.em.findOneOrFail(Events, event_id, {strict: true});
+
+		    console.log("Event ID:", event_id, "Host Id", host_id)
+			const theEventToDelete = await req.em.findOne(Events, {id:event_id});
+
+            if (!theEventToDelete) {
+            	reply.status(404).send({ message:"Unable to find event in backend" });
+            }
 
 			// Make sure the requester is host
-			const partcipantToDelete = await req.em.findOne(Participants, {user:host_id, event:event_id});
+			const partcipantToDelete = await req.em.findOne(Participants, {user:host_id, event:event_id, is_host:"true"});
 
 			const  item_list = await req.em.find(FoodItems, {event:event_id});
 			if (!item_list) {
@@ -237,18 +243,13 @@ export function EventRoutesInit(app: FastifyInstance) {
 			}
 
 
-			console.log("event to be deleted :", theEventToDelete);
-			console.log("Participant identity :", partcipantToDelete);
-
-
-			if(partcipantToDelete.is_host !== "true"){
+			if(!partcipantToDelete){
 				reply.status(403).send( {message:"You are not authorized to delete this item"});
 			}
 
 			await req.em.remove(item_list).flush();
-
-			await req.em.remove(partcipantToDelete).remove(theEventToDelete)
-				.flush();
+			await req.em.remove(partcipantToDelete).flush();
+			await req.em.remove(theEventToDelete).flush();
 
 		} catch (err) {
 			return reply.status(500).send(err);
