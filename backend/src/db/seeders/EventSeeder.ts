@@ -7,25 +7,21 @@ export class EventSeeder extends Seeder {
 	async run(em: EntityManager): Promise<void> {
 	
 		em.create(Events, {
-			event_name: "potluck_2",
-			event_location: "location_2",
-			event_date: "16th May 2023"
+			event_name: "Christmas",
+			event_location: "Providence Park, Portland",
+			event_date: "16th June 2023"
 		});
 		em.create(Events, {
-			event_name: "potluck_3",
-			event_location: "location_3",
-			event_date: "17th May 2023"
+			event_name: "Summer break",
+			event_location: "Portland State University",
+			event_date: "17th June 2023"
 		});
 		em.create(Events, {
-			event_name: "potluck_4",
-			event_location: "location_4",
-			event_date: "18th May 2023"
+			event_name: "Upcoming long Weekend",
+			event_location: "Nobel Woods, Hillsboro",
+			event_date: "18th July 2023"
 		});
-		em.create(Events, {
-			event_name: "potluck_5",
-			event_location: "location_5",
-			event_date: "19th May 2023"
-		});
+		
 		
 	}
 }
