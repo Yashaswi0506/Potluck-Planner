@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import potluck from "@images/potluck_img.jpg";
+import potluck from "@images/Potluck.webp";
 
 export const Home = () => {
   return (
