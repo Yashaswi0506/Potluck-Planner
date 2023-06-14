@@ -22,6 +22,8 @@ export const Signup = () => {
   const navigate = useNavigate();
   const [uid, setUID] = useState("");
   const [signInDB, setSignInDB] = useState(false);
+  const {idToken} = useUserAuth();
+  //const [token , setIdToken] = useState("");
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +32,7 @@ export const Signup = () => {
       await signUp(email, password).then((signInUser) => {
         setSignInDB(true);
         setUID(signInUser.user.uid);
+        console.log("Firebase User Created");
       });
     } catch (err) {
       setError(err.message);
@@ -38,13 +41,23 @@ export const Signup = () => {
   
   useEffect(() => {
     if (signInDB && uid !== "") {
+      const token = idToken;
+      console.log(token);
       const createUser = async () => {
+        const config = {
+          headers : {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+            'Access-Control-Allow-Origin': '*'
+          }
+        };
         await httpClient
-          .post("/users", { id: uid, name, email })
+          .post("/users", { id: uid, name, email }, config)
           .then((response) => {
             console.log("User Creation Status", response.status);
             if (response.status === 200) {
               setSubmitted(SubmissionStatus.SubmitSucceeded);
+              console.log(response.data);
             } else {
               setSubmitted(SubmissionStatus.SubmitFailed);
             }

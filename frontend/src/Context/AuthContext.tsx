@@ -1,4 +1,3 @@
-
 import { VerifyTokenService } from "@/Services/VerifyTokenService.tsx";
 import { createContext, useContext, useEffect, useState } from "react";
 import {
@@ -16,33 +15,37 @@ interface UserAuthContextValue {
   signUp: (email: string, password: string) => Promise<any>;
   logOut: () => Promise<void>;
   authorization: string;
-  idToken:string;
+  idToken: string;
 }
 
 const userAuthContext = createContext<UserAuthContextValue | null>(null);
 
-export function UserAuthContextProvider({ children }: { children: React.ReactNode }) {
+export function UserAuthContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [user, setUser] = useState<any>({});
   const [idToken, setIdToken] = useState<string | null>(null);
   const [authorization, setAuthorization] = useState("");
-  
+
   function logIn(email: string, password: string) {
     return signInWithEmailAndPassword(auth, email, password);
   }
-  
+
   function signUp(email: string, password: string) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
-  
+
   function logOut() {
     return signOut(auth);
   }
-  
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       console.log("Auth", currentUser);
       setUser(currentUser);
-      
+
       if (currentUser != null) {
         currentUser
           .getIdToken()
@@ -59,14 +62,16 @@ export function UserAuthContextProvider({ children }: { children: React.ReactNod
         setIdToken(null);
       }
     });
-    
+
     return () => {
       unsubscribe();
     };
   }, []);
-  
+
   return (
-    <userAuthContext.Provider value={{ user, logIn, signUp, logOut, authorization , idToken }}>
+    <userAuthContext.Provider
+      value={{ user, logIn, signUp, logOut, authorization, idToken }}
+    >
       {children}
     </userAuthContext.Provider>
   );

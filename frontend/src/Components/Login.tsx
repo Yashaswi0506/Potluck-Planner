@@ -3,20 +3,20 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 export const Login = () => {
-
-
+  
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { logIn } = useUserAuth();
-
+  
   const { user } = useUserAuth();
   const navigate = useNavigate();
   const [authorization, setauthorization] = useState("");
   const [idToken, setIdToken] = useState<any>({});
   const { logOut } = useUserAuth();
-
-
+  
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -24,11 +24,11 @@ export const Login = () => {
       await logIn(email, password);
       navigate("/");
       console.log(email);
-
+      
       //console.log(user);
     } catch (err) {
       //  setError(err.message);
-
+      
       console.log(err);
     }
   };
@@ -39,7 +39,7 @@ export const Login = () => {
           <h3 className="text-3xl font-semibold text-center text-700">
             Login
           </h3>
-
+          
           <Form onSubmit={handleSubmit} className="space-y-4">
             <div className="flex flex-col items-center">
               <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -50,7 +50,7 @@ export const Login = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Group>
-
+              
               <Form.Group className="mb-3" controlId="formBasicPassword">
                 <Form.Label className="mb=1 mr-2">Password</Form.Label>
                 <Form.Control
@@ -59,7 +59,7 @@ export const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </Form.Group>
-
+              
               <div className="d-grid gap-2">
                 <Button variant="primary" type="submit">
                   Log In
@@ -68,11 +68,11 @@ export const Login = () => {
             </div>
           </Form>
           <hr />
-        
-        <div className="p-4 text-center">
-          Don't have an account? <Link to="/signup">Sign up</Link>
+          
+          <div className="p-4 text-center">
+            Don't have an account? <Link to="/signup">Sign up</Link>
+          </div>
         </div>
-      </div>
       </div>
     </>
   );
