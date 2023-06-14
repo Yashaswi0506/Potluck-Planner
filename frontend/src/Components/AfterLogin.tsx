@@ -88,13 +88,13 @@ export const AfterLogin = () => {
     <div >
       <div className="flex justify-center">
         <button
-          className="btn  btn-lg btn-wide btn-accent  mx-5"
+          className="btn  btn-sm btn-xs btn-accent mx-1"
           onClick={onCreateOrEditEventButtonClick.bind(null, null)}
         >
           Create Event
         </button>
         <button
-          className="btn  btn-lg btn-wide btn-accent mx-5"
+          className="btn  btn-sm btn-xs btn-accent mx-1"
           onClick={onRecommendedPotluckIdeasButtonClick}
         >
           Recommended Potluck Ideas
@@ -102,8 +102,9 @@ export const AfterLogin = () => {
       </div>
       <div>
         <div className="flex flex-col  items-center justify-center">
-          <h2>My Potlucks:</h2>
+
           <table className="table">
+          <h2>My Potlucks:</h2>
             <tbody>
               <tr>
                 <th>Event Name</th>
@@ -165,5 +166,4 @@ export const AfterLogin = () => {
   );
 };
 
-//<a href="/manage_potluck">{event.event_name}</a>
-//<button className="btn btn-primary btn-circle" onClick={onPotluckButtonclick}>{event.event_name</button>
+

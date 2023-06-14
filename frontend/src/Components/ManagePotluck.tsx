@@ -166,85 +166,91 @@ export const ManagePotluck = () => {
 	
 	return (
 		<div>
-			<div>
+			<div className = "flex flex-col  items-center justify-center">
 				<h2>Potluck Details:</h2>
-				<table border={1}>
-					<tbody>
-					<tr>
-						<th>Event Name</th>
-						<th>Event Location</th>
-						<th>Event Date</th>
-					</tr>
+
 					{event ?
-						event.map((event: { id: number, event_name: string; event_location: string, event_date: string}) => (
-							<tr key={event.id}>
-								<th>{event.event_name}</th>
-								<th>{event.event_location}</th>
-								<th>{event.event_date}</th>
-							
-							</tr>
-						))
-						: "Not found"}
-					
-					</tbody>
-				</table>
+                          event.map((event: { id: number, event_name: string; event_location: string, event_date: string}) => (
+                            <div key={event.id}>
+                              <label>
+                                  <strong>Event Name:</strong> {event.event_name}
+                                  <br />
+                                </label>
+                                <label>
+                                  <strong>Event Location: </strong> {event.event_location}
+                                  <br />
+                                </label>
+                                <label>
+                                  <strong>Event Date:</strong> {event.event_date}
+                                  <br />
+                                </label>
+
+                            </div>
+                          ))
+                          : "Not found"
+                    }
+
+
+
 				
-				<div className="flex flex-col items-center bg-slate-700 w-4/5 mx-auto p-5 rounded-box">
-					<h2 className="text-4xl text-blue-600 mb-5">Add new Item:</h2>
+				<div className="flex flex-col items-center bg-slate-700 w-1/15 p-1 rounded-box mb-10 mt-10 ">
+					<h2 className="text-4xl text-blue-600 mb-1">Add new Item:</h2>
 					
-					<div className="flex flex-col w-full mb-5">
-						<label htmlFor="name" className="text-blue-300 mb-2">Item Name:</label>
+					<div className="flex items-center mb-1">
+                    	<label htmlFor="name" className="text-blue-300 mb-5 mr-4">Item Name:</label>
+                    	<input
+                    		placeholder="Name..."
+                    		type="text"
+                    		id="name"
+                    		required
+                    		value={item_name}
+                    		onChange={e => setItemName(e.target.value)}
+                    		name="name"
+                    		className="input input-bordered w-1/2"
+                    	/>
+                    </div>
+
+
+					<div className="flex items-center mb-1">
+						<label htmlFor="type" className="text-blue-300 mb-5 mr-6">Item Type:</label>
 						<input
-							placeholder="Name..."
-							type="text"
-							id="name"
-							required
-							value={item_name}
-							onChange={e => setItemName(e.target.value)}
-							name="name"
-							className="input input-bordered"
-						/>
-					</div>
-					
-					
-					<div className="flex flex-col w-full mb-5">
-						<label htmlFor="loc" className="text-blue-300 mb-2">Item Type:</label>
-						<input
-							placeholder="location..."
+							placeholder="Type..."
 							type="text"
 							id="loc"
 							required
 							value={item_type}
 							onChange={e => setItemType(e.target.value)}
 							name="loc"
-							className="input input-bordered"
+							className="input input-bordered w-1/2 "
 						/>
 					</div>
-					
-					<div className="flex flex-col w-full mb-5">
-						<label htmlFor="date" className="text-blue-300 mb-2">Item Quantity:</label>
+
+					<div className="flex items-center mb-1">
+						<label htmlFor="qty" className="text-blue-300 mb-2 mr-1">Item Quantity:</label>
 						<input
-							placeholder="date..."
+							placeholder="Quantity..."
 							type="text"
 							id="date"
 							required
 							value={item_quantity}
 							onChange={e => setItemQuantity(e.target.value)}
 							name="date"
-							className="input input-bordered"
+							className="input input-bordered w-1/2 "
 						/>
 					</div>
 					
 					
 					{
 						item_name != null && item_type != null && item_quantity != null &&
-            <div>
-              <button className="btn btn-primary btn-circle" onClick={onSaveItemButtonclick}>Save</button>
-              <button className="btn btn-primary btn-circle" onClick={onCancelItemButtonclick}>Cancel</button>
-            </div>
+                        <div>
+                          <button className="btn  btn-sm btn-xs btn-accent mx-1" onClick={onSaveItemButtonclick}>Save</button>
+                          <button className="btn  btn-sm btn-xs btn-accent mx-1" onClick={onCancelItemButtonclick}>Cancel</button>
+                        </div>
 					}
 				</div>
-				<table border={1}>
+				<div className= "flex flex-col  items-center justify-center">
+				<table className="table">
+				<h2>Item list:</h2>
 					<tbody>
 					<tr>
 						<th>Item Name</th>
@@ -259,17 +265,17 @@ export const ManagePotluck = () => {
 								<th>{fooditem.item_type}</th>
 								<th>{fooditem.item_quantity}</th>
 								<th>{fooditem.user_name}</th>
-								<th><button className="btn btn-primary btn-circle" onClick={onClaimButtonclick.bind(null,fooditem.id)}>
+								<th><button className="btn btn-ghost text-blue-500 underline text-base" onClick={onClaimButtonclick.bind(null,fooditem.id)}>
 									{fooditem.claim! ? 'Unclaim' : 'Claim'}</button></th>
-								<th></th>
-								<th><button className="btn btn-primary btn-circle" onClick={onDeleteItemButtonclick.bind(null,fooditem.id)}>Delete</button></th>
+
+								<th><button className="btn btn-ghost text-blue-500 underline text-base" onClick={onDeleteItemButtonclick.bind(null,fooditem.id)}>Delete</button></th>
 							</tr>
 						))
 						: "Not found"}
 					</tbody>
 				</table>
+				</div>
 			</div>
 		</div>
-	
 	);
 };
