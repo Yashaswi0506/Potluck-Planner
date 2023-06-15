@@ -89,7 +89,7 @@ export const CreateEvent = () => {
       if (value === 200) {
         console.log("created an event");
         setEventCreation("true");
-        alert("You have edited the event");
+
       } else {
         console.log("event not created");
       }
