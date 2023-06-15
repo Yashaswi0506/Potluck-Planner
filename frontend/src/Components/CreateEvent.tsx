@@ -76,6 +76,7 @@ export const CreateEvent = () => {
       if (value === 200) {
         console.log("created an event");
         setEventCreation("true");
+        alert("You have edited the event");
       } else {
         console.log("event not created");
       }
@@ -91,6 +92,8 @@ export const CreateEvent = () => {
     setEventLocation("");
     setEventDate("");
     console.log("EVENT NOT CREATED");
+
+    navigate("/after_login");
   };
 
   function onMessageSendButton() {
@@ -183,7 +186,7 @@ export const CreateEvent = () => {
               event_date != null && (
                 <div>
                   <button
-                    className="btn btn-primary mx-2 "
+                    className="btn btn-success mx-2 "
                     onClick={onSaveEventButtonclick}
                   >
                     Save

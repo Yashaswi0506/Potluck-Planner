@@ -3,7 +3,6 @@
 //the page will have "Create Potluck" button, along with applicaiton info
 //"My potlucks" heading with two buttons "Potluck I can manage" and "Potluck that I am attending"
 
-
 import { useUserAuth } from "@/Context/AuthContext.tsx";
 import { useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
@@ -11,10 +10,9 @@ import axios from "axios";
 import {getAuth} from "firebase/auth";
 
 export const AfterLogin = () => {
-  
-  
   const [events, setEvents] = useState([]);
   const auth = useUserAuth();
+
   
   useEffect(() => {
     const getEvents = async () => {
@@ -32,7 +30,6 @@ export const AfterLogin = () => {
     
   }, [auth]);
   
-  
   const navigate = useNavigate();
   
   const onCreateOrEditEventButtonClick = (id) => {
@@ -46,11 +43,7 @@ export const AfterLogin = () => {
   const onPotluckButtonclick = (id) => {
     console.log("event id in after login :", id);
     navigate("/manage_potluck", {state: {eventID:id}});
-    
   };
-  
-  
-  
   
   //delete event
   const onDeleteEventButtonClick = (id) => {
@@ -64,19 +57,20 @@ export const AfterLogin = () => {
           event_id:id,
           host_id: auth.user.uid
         }
-        
       });
-      
       return result.status;
     };
-    
+
     delete_event_req().then(value =>{
       if (value === 200){
         console.log("Event Deleted");
+        alert('You have successfully deleted an event!')
+
         window.location.reload();
       }
       else{
         console.log("Event not deleted.");
+        alert('Only host can delete an event!')
       }
     });
     
@@ -101,14 +95,13 @@ export const AfterLogin = () => {
       </div>
       <div>
         <div className="flex flex-col  items-center justify-center">
-
           <table className="table">
           <h2>My Potlucks:</h2>
             <tbody>
               <tr>
-                <th>Event Name</th>
-                <th>Event Location</th>
-                <th>Event Date</th>
+                <th style={{ textDecoration: 'underline', textAlign: 'center' }}>Event Name</th>
+                <th style={{ textDecoration: 'underline', textAlign: 'center' }}>Event Location</th>
+                <th style={{ textDecoration: 'underline', textAlign: 'center' }}>Event Date</th>
               </tr>
               {events
                 ? events.map(
@@ -143,6 +136,7 @@ export const AfterLogin = () => {
                           </button>
                         </th>
                         <th>
+
                           <button
                             className="btn btn-ghost text-blue-500 underline text-base"
                             onClick={onDeleteEventButtonClick.bind(

@@ -67,6 +67,7 @@ export const ManagePotluck = () => {
 		add_item_req().then(value =>{
 			if (value != null){
 				console.log("item added to the menu");
+				alert('You have successfully added an item!');
 				window.location.reload();
 			}
 			else{
@@ -76,13 +77,11 @@ export const ManagePotluck = () => {
 	};
 	
 	const onCancelItemButtonclick = () => {
-		
 		setItemName("");
 		setItemType("");
 		setItemQuantity("");
 		console.log("Item not added");
 		navigate("/after_login");
-		
 	};
 	
 	
@@ -145,22 +144,21 @@ export const ManagePotluck = () => {
 				data: {
 					item_id:id, participant_id:user_id
 				}
-				
 			});
-			
 			return result.status;
 		};
 		
 		delete_item_req().then(value =>{
 			if (value === 200){
 				console.log("Item Deleted");
+				alert('You have successfully deleted an item!');
 				window.location.reload();
 			}
 			else{
 				console.log("Item not deleted.");
 			}
 		});
-		
+
 	};
 	
 	
@@ -190,9 +188,6 @@ export const ManagePotluck = () => {
                           : "Not found"
                     }
 
-
-
-				
 				<div className="flex flex-col items-center bg-slate-700 w-1/15 p-1 rounded-box mb-10 mt-10 ">
 					<h2 className="text-4xl text-blue-600 mb-1">Add new Item:</h2>
 					
@@ -253,10 +248,10 @@ export const ManagePotluck = () => {
 				<h2>Item list:</h2>
 					<tbody>
 					<tr>
-						<th>Item Name</th>
-						<th>Item Type</th>
-						<th>Item Quantity</th>
-						<th>User Name</th>
+						<th style={{ textDecoration: 'underline', textAlign: 'center' }}>Item Name</th>
+						<th style={{ textDecoration: 'underline', textAlign: 'center' }}>Item Type</th>
+						<th style={{ textDecoration: 'underline', textAlign: 'center' }}>Item Quantity</th>
+						<th style={{ textDecoration: 'underline', textAlign: 'center' }}>User Name</th>
 					</tr>
 					{fooditem ?
 						fooditem.map((fooditem: { id: number, item_name: string; item_type: string, item_quantity: string, claim: number, user_name: string}) => (

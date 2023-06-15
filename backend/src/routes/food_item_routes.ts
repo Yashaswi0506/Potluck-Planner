@@ -10,12 +10,9 @@ export function FoodItemRoutesInit(app: FastifyInstance) {
 	//add new item
 	app.post<{ Body: ICreateFoodItemBody }>("/items", async (req, reply) => {
 		const {event,item_name, item_type, item_quantity} = req.body;
-
-
 		let newItem;
 		try {
 			 newItem = await req.em.create(FoodItems, {event, item_name, item_type, item_quantity});
-			
 			await req.em.flush();
 			return reply.send(newItem);
 		} catch (err) {
@@ -64,44 +61,9 @@ export function FoodItemRoutesInit(app: FastifyInstance) {
 	
 	//edit item from the list
 	// UPDATE
-	app.put<{Body: {item_id, item_name:string, item_type:string, item_quantity:string, participant_id:string}}>
-	("/items", async(req
-		, reply) => {
-		const { item_id, item_name, item_type, item_quantity, participant_id} = req.body;
-		try {
-			const itemToUpdate = await req.em.findOne(FoodItems, {id:item_id});
-			if (!itemToUpdate) {
-				reply.status(404).send({ message:"Item not found" });
-			}
-			
-			const host = await req.em.findOne(Participants, {event:itemToUpdate.event, is_host:"true"});
-			console.log("host :", host);
-			
-			const participant = await req.em.findOne(Participants, {event:itemToUpdate.event, user: participant_id});
-			console.log("participant in update :", participant);
-			
-			
-			if (host.user.id != participant_id && participant.user != itemToUpdate.claim) {
-				reply.status(403).send( {message:"You are not authorized to edit this item"});
-			}
-			
-			
-			itemToUpdate.item_name= item_name;
-			itemToUpdate.item_type= item_type;
-			itemToUpdate.item_quantity=item_quantity;
-			
-			// Reminder -- this is how we persist our JS object changes to the database itself
-			await req.em.flush();
-			console.log("Menu updated");
-			reply.send(itemToUpdate);
-		}catch (err){
-			console.error(err);
-			reply.status(401).send(err);
-		}
-		
-	});
-	
-	
+
+
+
 	// Route for claiming a food item
 	app.put<{Body: { itemId: number, participantId: string, eventId:number } }>("/items/claim", async (req, reply) => {
 		const { itemId } = req.body;
@@ -154,7 +116,6 @@ export function FoodItemRoutesInit(app: FastifyInstance) {
 			const host = await req.em.findOne(Participants, {event:itemToDelete.event, is_host:"true"});
 			console.log("host :", host);
 
-
 			if (host.user.id != participant_id ) {
 				reply.status(403).send( {message:"You are not authorized to edit this item"});
 			}
@@ -162,35 +123,7 @@ export function FoodItemRoutesInit(app: FastifyInstance) {
 			// Reminder -- this is how we persist our JS object changes to the database itself
 			await req.em.remove(itemToDelete).flush();
 			console.log("Item Deleted");
-			reply.send(itemToDelete);
-		}catch (err){
-			console.error(err);
-			reply.status(401).send(err);
-		}
-	});
-
-
-	//delete complete menu
-	app.delete<{ Body: { event_id: number; participant_id: string} }>("/items/all", async (req, reply) => {
-		const {event_id, participant_id} = req.body;
-		try {
-			const  item_list = await req.em.find(FoodItems, {event:event_id});
-			if (!item_list) {
-				reply.status(404).send({ message:"Menu does not exist" });
-			}
-
-			const host = await req.em.findOne(Participants, {user:participant_id, is_host:"true"});
-			console.log("host :", host);
-
-
-			if (host.user.id != participant_id ) {
-				reply.status(403).send( {message:"You are not authorized to the menu"});
-			}
-
-			// Reminder -- this is how we persist our JS object changes to the database itself
-			await req.em.remove(item_list).flush();
-			console.log("Item Deleted");
-			reply.status(200);
+			reply.status(200).send(itemToDelete);
 		}catch (err){
 			console.error(err);
 			reply.status(401).send(err);
