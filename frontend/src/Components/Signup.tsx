@@ -1,3 +1,8 @@
+//The user enter details and gets registers in firebase
+//Firebase sends uid and token . This uid is sent to backend postgres database with user details without password
+//Backend checks for user's authenticity from JSONwentoken if valid then add user to backend database
+//User is redirected to navigation page
+
 import { useUserAuth } from "@/Context/AuthContext.tsx";
 import { httpClient } from "@/Services/HttpClient.tsx";
 import {useEffect, useState} from "react";

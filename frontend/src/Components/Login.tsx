@@ -1,3 +1,9 @@
+//User enters username and password and gets login using firebase
+//Oncce loggedin , firebase sends uid and token, then the uid and token is sent to backend
+//The token and jwt is verified using third party JSONWebtoken and users authenticty is checked.
+//If the user is valid user can access the site
+//else user is logged out
+
 import { useUserAuth } from "@/Context/AuthContext.tsx";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";

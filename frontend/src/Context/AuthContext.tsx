@@ -1,3 +1,8 @@
+//This file reads methos useful for signin, login and logout from firebase setup
+//aand stores users authentication status globally.It executes all login related funtionalities.
+//In the use effect whenever the user is changed/ logged out or refreshes , it checks for
+//authorization from backend
+
 import { VerifyTokenService } from "@/Services/VerifyTokenService.tsx";
 import { createContext, useContext, useEffect, useState } from "react";
 import {
@@ -20,6 +25,7 @@ interface UserAuthContextValue {
 
 const userAuthContext = createContext<UserAuthContextValue | null>(null);
 
+
 export function UserAuthContextProvider({
   children,
 }: {
@@ -29,14 +35,17 @@ export function UserAuthContextProvider({
   const [idToken, setIdToken] = useState<string | null>(null);
   const [authorization, setAuthorization] = useState("");
 
+  
   function logIn(email: string, password: string) {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
+  
   function signUp(email: string, password: string) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
 
+  
   function logOut() {
     return signOut(auth);
   }
@@ -76,6 +85,7 @@ export function UserAuthContextProvider({
     </userAuthContext.Provider>
   );
 }
+
 
 export function useUserAuth() {
   return useContext(userAuthContext);

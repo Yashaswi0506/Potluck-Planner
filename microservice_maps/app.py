@@ -1,3 +1,7 @@
+#This file is receiving location name from events page when clicked on Maps
+#After receiving location, the search url gets the location cordinates.
+#the location cordinates are then sent to details url which retrieves location url on google maos
+
 from flask import Flask, render_template, jsonify ,request
 import requests
 from dotenv import load_dotenv

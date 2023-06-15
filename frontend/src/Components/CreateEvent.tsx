@@ -1,3 +1,16 @@
+// 1. When a user clicks on Create Event page, it is redirected to Create Event page
+//User enter event details and clicks on save , then user is redirected to my potlucks page
+
+//2. When the host wants to view Event details , after clicking on edit host lands on this page
+//Host is able to see all the potluck details and there is a textbox whiich sends potluck invitation to the user
+//Host can also view gueest list and user rsvp status
+//Host can view location map on google maps by clicking on maps
+
+//3.When the guest lands on this page, guest will be able to see maps and  guest list. But will not be able to see add participants text box
+
+
+
+
 import { useUserAuth } from "@/Context/AuthContext.tsx";
 import { AddParticipantService } from "@/Services/AddParticipantsService.tsx";
 import { Maps_Microservices } from "@/Services/Maps_MicroService.tsx";

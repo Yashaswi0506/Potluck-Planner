@@ -1,3 +1,5 @@
+//All login related links and navbar
+
 import { AfterLogin } from "@/Components/AfterLogin.tsx";
 import { CreateEvent } from "@/Components/CreateEvent.tsx";
 import { ManagePotluck } from "@/Components/ManagePotluck.tsx";

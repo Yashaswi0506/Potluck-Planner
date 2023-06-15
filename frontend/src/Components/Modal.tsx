@@ -1,3 +1,4 @@
+//displays user name and rsvp status in modal format
 import { RSVPList, user } from "@/PotluckTypes.ts";
 import { DisplayRSVPStatus } from "@/Services/DisplayRSVPStatus.tsx";
 import React, { useEffect, useState } from "react";

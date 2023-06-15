@@ -1,3 +1,5 @@
+//When clicked on logout in navbar , get logged out of the sysrem
+
 import {useUserAuth} from "@/Context/AuthContext.tsx";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +15,7 @@ export const Logout = ()  =>{
       
         await logOut();
         
-        console.log("user should be empty");
+        
         console.log(user);
         navigate("/");
       
