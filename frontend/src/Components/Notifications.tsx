@@ -1,3 +1,6 @@
+//When a user clicks on Notification , all the inviation received by reciver gets displayed here
+//Along with Invitation, user gets an option to RSVP Potluck.
+//The rsvp sttaus is then stored in rsvp column of participants table
 import {
   useUserAuth,
   UserAuthContextProvider,

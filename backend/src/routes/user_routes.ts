@@ -1,3 +1,5 @@
+//This file contains API calls for signup , login and authorizing user
+
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { User, UserRole } from "../db/entities/User.js";
 import { ICreateUsersBody, IUpdateUsersBody } from "../types.js";

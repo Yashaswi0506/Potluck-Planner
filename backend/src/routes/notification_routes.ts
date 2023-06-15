@@ -1,3 +1,5 @@
+//This file conatins read and send notification functionality
+
 import { FastifyInstance } from "fastify";
 import { Notification } from "../db/entities/Notification.js";
 import { User, UserRole } from "../db/entities/User.js";

@@ -1,3 +1,7 @@
+//Checks from firebaswe auth details if user is logged in
+//if user is logged in it allows user to access routes
+//else user is redirected to Home Page
+
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { UserAuthContextProvider, useUserAuth } from "../Context/AuthContext";

@@ -1,3 +1,5 @@
+//This file conatins adding participants to the event, updating and reading rsvp status
+
 import { FastifyInstance } from "fastify";
 import { Notification } from "../db/entities/Notification.js";
 import { Participants , RSVPStatus} from "../db/entities/Participant.js";

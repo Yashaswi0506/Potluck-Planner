@@ -30,7 +30,7 @@ export class ParticipantSeeder extends Seeder {
 		});
 		
 		em.create(Participants, {
-			is_host:"flase",
+			is_host:"false",
 			user:user_id_1.id,
 			event:event_id_1.id
 		});
